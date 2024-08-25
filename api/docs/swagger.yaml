@@ -1,5 +1,30 @@
 basePath: /
 definitions:
+  models.DriverLicence:
+    properties:
+      address:
+        type: string
+      birth_date:
+        type: string
+      category:
+        type: string
+      expiration_date:
+        type: string
+      father_name:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      issue_date:
+        type: string
+      issued_by:
+        type: string
+      last_name:
+        type: string
+      licence_number:
+        type: string
+    type: object
   models.Error:
     properties:
       error:
@@ -90,6 +115,42 @@ definitions:
       data:
         $ref: '#/definitions/models.LoginResponse'
       refresh_token:
+        type: string
+    type: object
+  models.UpdateCarImage:
+    properties:
+      url:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.Url:
+    properties:
+      url:
+        type: string
+    type: object
+  models.UserFines:
+    properties:
+      car_owner_name:
+        type: string
+      licence_plate:
+        type: string
+      officer_id:
+        type: string
+    type: object
+  models.UserProfile:
+    properties:
+      created_at:
+        type: string
+      driver_license:
+        $ref: '#/definitions/models.DriverLicence'
+      email:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+      user_id:
         type: string
     type: object
 info:
@@ -351,6 +412,205 @@ paths:
       summary: Get Unpaid Fines
       tags:
       - Fines
+  /user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Delete User
+      tags:
+      - User
+  /user/image:
+    post:
+      consumes:
+      - application/json
+      description: Upload a new car image
+      parameters:
+      - description: Car Image
+        in: body
+        name: image
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateCarImage'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Add Car Image
+      tags:
+      - User
+  /user/image/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve the image of a user's car
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Url'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Get Car Image
+      tags:
+      - User
+  /user/paid_fines/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all paid fines for a user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserFines'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Get Paid Fines
+      tags:
+      - User
+  /user/profile/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve the profile of a user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserProfile'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Get User Profile
+      tags:
+      - User
+  /user/unpaid_fines/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all unpaid fines for a user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserFines'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Get Unpaid Fines
+      tags:
+      - User
 schemes:
 - http
 swagger: "2.0"

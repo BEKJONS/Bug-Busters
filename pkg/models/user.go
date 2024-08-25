@@ -5,13 +5,13 @@ type UserId struct {
 }
 
 type UserProfile struct {
-	UserId        string        `json:"user_id" db:"user_id"`
-	LicenseNumber string        `json:"license_number" db:"license_number"`
+	Id            string        `json:"user_id" db:"id"`
+	DriverLicense string        `json:"driver_license" db:"driver_license"`
 	Email         string        `json:"email" db:"email"`
 	Role          string        `json:"role" db:"role"`
 	CreatedAt     string        `json:"created_at" db:"created_at"`
 	UpdatedAt     string        `json:"updated_at" db:"updated_at"`
-	DriverLicense DriverLicence `json:"driver_license"`
+	Driver        DriverLicence `json:"driver_license"`
 }
 
 type DriverLicence struct {
@@ -25,10 +25,14 @@ type DriverLicence struct {
 	ExpirationDate string `json:"expiration_date" db:"expiration_date"`
 	Category       string `json:"category" db:"category"`
 	IssuedBy       string `json:"issued_by" db:"issued_by"`
-	LicenceNumber  string `json:"licence_number" db:"licence_number"`
+	LicenceNumber  string `json:"licence_number" db:"license_number"`
 }
 
 type UpdateCarImage struct {
 	UserId string `json:"user_id" db:"user_id"`
 	Url    string `json:"url" db:"url"`
+}
+
+type Url struct {
+	Url string `json:"url" db:"url"`
 }

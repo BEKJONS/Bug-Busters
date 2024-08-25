@@ -23,3 +23,12 @@ type ServiceStorage interface {
 	DeleteService(id string) (string, error)
 	GetServices() (*models.Services, error)
 }
+
+type UserStorage interface {
+	GetProfile(id models.UserId) (models.UserProfile, error)
+	AddImage(in *models.UpdateCarImage) error
+	GetImage(useId string) (string, error)
+	GetPaidFinesU(userId string) (*[]*models.UserFines, error)
+	GetUnpaid(userId string) (*[]*models.UserFines, error)
+	DeleteUser(userId string) error
+}

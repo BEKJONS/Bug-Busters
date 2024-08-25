@@ -16,9 +16,9 @@ import (
 // @description Server for signIn or signUp
 // @BasePath /
 // @schemes http
-func NewRouter(s service.AuthService, i service.IIService) *gin.Engine {
+func NewRouter(s service.AuthService, i service.IIService, u service.UserService) *gin.Engine {
 	r := gin.New()
-	h := handler.NewHandler(logger.NewLogger(), s, i)
+	h := handler.NewHandler(logger.NewLogger(), s, i, u)
 
 	// Swagger UI route
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
