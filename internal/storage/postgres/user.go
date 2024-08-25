@@ -1,12 +1,19 @@
 package postgres
 
 import (
+	"bug_busters/internal/storage"
 	"bug_busters/pkg/models"
 	"github.com/jmoiron/sqlx"
 )
 
 type userRepo struct {
 	db *sqlx.DB
+}
+
+func NewUserRepo(db *sqlx.DB) storage.UserStorage {
+	return &userRepo{
+		db: db,
+	}
 }
 
 func (u *userRepo) GetProfile(id models.UserId) (models.UserProfile, error) {

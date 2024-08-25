@@ -32,6 +32,6 @@ type Handler struct {
 	log *slog.Logger
 }
 
-func NewHandler(log *slog.Logger, sr service.AuthService, II service.IIService) Handlers {
-	return &Handler{log: log, auth: sr, ii: II}
+func NewHandler(log *slog.Logger, sr service.AuthService, II service.IIService, u service.UserService) Handlers {
+	return &Handler{log: log, auth: sr, ii: II, user: u}
 }

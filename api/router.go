@@ -15,9 +15,9 @@ import (
 // @description Server for signIn or signUp
 // @BasePath /
 // @schemes http
-func NewRouter(s service.AuthService, i service.IIService) *gin.Engine {
+func NewRouter(s service.AuthService, i service.IIService, u service.UserService) *gin.Engine {
 	r := gin.New()
-	h := handler.NewHandler(logger.NewLogger(), s, i)
+	h := handler.NewHandler(logger.NewLogger(), s, i, u)
 
 	// Swagger UI route
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -44,7 +44,7 @@ func NewRouter(s service.AuthService, i service.IIService) *gin.Engine {
 		user.GET("/profile/:id", h.GetProfile)          // Get user profile by ID
 		user.POST("/image", h.AddImage)                 // Add car image
 		user.GET("/image/:id", h.GetImage)              // Get car image by user ID
-		user.GET("/paid_fines/:id", h.GetPaidFines)     // Get paid fines by user ID
+		user.GET("/paid_fines/:id", h.GetPaidFinesU)    // Get paid fines by user ID
 		user.GET("/unpaid_fines/:id", h.GetUnpaidFines) // Get unpaid fines by user ID
 		user.DELETE("/:id", h.DeleteUser)               // Delete user by ID
 	}
