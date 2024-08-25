@@ -20,13 +20,10 @@ type FineReq struct {
 	Price              int    `json:"price" db:"price"`
 }
 type FineAccept struct {
-	Id          string `json:"id" db:"id"`
-	PaymentDate string `json:"payment_date" db:"payment_date"`
+	Id string `json:"id" db:"id"`
 }
 type Pagination struct {
 	Limit int `json:"limit"`
 	Page  int `json:"page"`
 }
-type Fines struct {
-	Fine Fine `json:"fine"`
-}
+type Fines []Fine

@@ -15,7 +15,53 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/login": {
+        "/auth/add_license": {
+            "post": {
+                "description": "Add a new license to the system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Add a new license",
+                "parameters": [
+                    {
+                        "description": "License information",
+                        "name": "License",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.LicenceNumber"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
             "post": {
                 "description": "sign in user",
                 "consumes": [
@@ -67,7 +113,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/register": {
+        "/auth/register": {
             "post": {
                 "description": "create users",
                 "consumes": [
@@ -118,6 +164,246 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/fines": {
+            "get": {
+                "description": "Retrieve all fines",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fines"
+                ],
+                "summary": "Get All Fines",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Fine"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new fine",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fines"
+                ],
+                "summary": "Create Fines",
+                "parameters": [
+                    {
+                        "description": "Create fine",
+                        "name": "Fine",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.FineReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/fines/:id/accept": {
+            "post": {
+                "description": "Accept a fine by updating its payment date",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fines"
+                ],
+                "summary": "Accept Fines By ID",
+                "parameters": [
+                    {
+                        "description": "Accept fine",
+                        "name": "FineAccept",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.FineAccept"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/fines/paid": {
+            "get": {
+                "description": "Retrieve all paid fines",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fines"
+                ],
+                "summary": "Get Paid Fines",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Fine"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/fines/unpaid": {
+            "get": {
+                "description": "Retrieve all unpaid fines",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fines"
+                ],
+                "summary": "Get Unpaid Fines",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Fine"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -125,6 +411,80 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Fine": {
+            "type": "object",
+            "properties": {
+                "fine_date": {
+                    "type": "string"
+                },
+                "fine_owner": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "license_plate": {
+                    "type": "string"
+                },
+                "officer_id": {
+                    "type": "string"
+                },
+                "payment_date": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "tech_passport_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.FineAccept": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.FineReq": {
+            "type": "object",
+            "properties": {
+                "fine_date": {
+                    "type": "string"
+                },
+                "fine_owner": {
+                    "type": "string"
+                },
+                "license_plate": {
+                    "type": "string"
+                },
+                "officer_id": {
+                    "type": "string"
+                },
+                "payment_date": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "tech_passport_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.LicenceNumber": {
+            "type": "object",
+            "properties": {
+                "number": {
+                    "type": "string"
+                },
+                "userId": {
                     "type": "string"
                 }
             }
@@ -197,10 +557,10 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "/auth",
+	BasePath:         "/",
 	Schemes:          []string{"http"},
-	Title:            "Authenfication service",
-	Description:      "server for signIn or signUp",
+	Title:            "Authentication service",
+	Description:      "Server for signIn or signUp",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

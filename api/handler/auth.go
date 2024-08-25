@@ -19,7 +19,7 @@ import (
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
-// @Router /register [post]
+// @Router /auth/register [post]
 func (h *Handler) Register(c *gin.Context) {
 	var auth *models.RegisterRequest
 
@@ -50,7 +50,7 @@ func (h *Handler) Register(c *gin.Context) {
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
-// @Router /login [post]
+// @Router /auth/login [post]
 func (h *Handler) Login(c *gin.Context) {
 	var auth *models.LoginEmailRequest
 
@@ -70,7 +70,18 @@ func (h *Handler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-func (h *authHandler) AddLicense(c *gin.Context) {
+// AddLicense godoc
+// @Summary Add a new license
+// @Description Add a new license to the system
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param License body models.LicenceNumber true "License information"
+// @Success 200 {object} models.Message
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
+// @Router /auth/add_license [post]
+func (h *Handler) AddLicense(c *gin.Context) {
 	var req *models.LicenceNumber
 
 	if err := c.ShouldBindJSON(req); err != nil {

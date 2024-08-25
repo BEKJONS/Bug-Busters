@@ -11,7 +11,7 @@ type AuthStorage interface {
 type IIStorage interface {
 	CreateFines(fine *models.FineReq) error
 	AcceptFinesById(accept models.FineAccept) error
-	GetPaidFines(pagination models.Pagination) (*models.Fines, error)
-	GetUnpaidFines(pagination models.Pagination) (*models.Fines, error)
+	GetPaidFines(pagination models.Pagination) (models.Fines, error)
+	GetUnpaidFines(pagination models.Pagination) (models.Fines, error)
 	GetAllFines(pagination models.Pagination) (*models.Fines, error)
 }

@@ -1,8 +1,56 @@
-basePath: /auth
+basePath: /
 definitions:
   models.Error:
     properties:
       error:
+        type: string
+    type: object
+  models.Fine:
+    properties:
+      fine_date:
+        type: string
+      fine_owner:
+        type: string
+      id:
+        type: string
+      license_plate:
+        type: string
+      officer_id:
+        type: string
+      payment_date:
+        type: string
+      price:
+        type: integer
+      tech_passport_number:
+        type: string
+    type: object
+  models.FineAccept:
+    properties:
+      id:
+        type: string
+    type: object
+  models.FineReq:
+    properties:
+      fine_date:
+        type: string
+      fine_owner:
+        type: string
+      license_plate:
+        type: string
+      officer_id:
+        type: string
+      payment_date:
+        type: string
+      price:
+        type: integer
+      tech_passport_number:
+        type: string
+    type: object
+  models.LicenceNumber:
+    properties:
+      number:
+        type: string
+      userId:
         type: string
     type: object
   models.LoginEmailRequest:
@@ -46,11 +94,41 @@ definitions:
     type: object
 info:
   contact: {}
-  description: server for signIn or signUp
-  title: Authenfication service
+  description: Server for signIn or signUp
+  title: Authentication service
   version: "1.0"
 paths:
-  /login:
+  /auth/add_license:
+    post:
+      consumes:
+      - application/json
+      description: Add a new license to the system
+      parameters:
+      - description: License information
+        in: body
+        name: License
+        required: true
+        schema:
+          $ref: '#/definitions/models.LicenceNumber'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Add a new license
+      tags:
+      - Auth
+  /auth/login:
     post:
       consumes:
       - application/json
@@ -84,7 +162,7 @@ paths:
       summary: LoginEmail Users
       tags:
       - Auth
-  /register:
+  /auth/register:
     post:
       consumes:
       - application/json
@@ -118,6 +196,161 @@ paths:
       summary: Register Users
       tags:
       - Auth
+  /fines:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all fines
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Fine'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Get All Fines
+      tags:
+      - Fines
+    post:
+      consumes:
+      - application/json
+      description: Create a new fine
+      parameters:
+      - description: Create fine
+        in: body
+        name: Fine
+        required: true
+        schema:
+          $ref: '#/definitions/models.FineReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Create Fines
+      tags:
+      - Fines
+  /fines/:id/accept:
+    post:
+      consumes:
+      - application/json
+      description: Accept a fine by updating its payment date
+      parameters:
+      - description: Accept fine
+        in: body
+        name: FineAccept
+        required: true
+        schema:
+          $ref: '#/definitions/models.FineAccept'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Accept Fines By ID
+      tags:
+      - Fines
+  /fines/paid:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all paid fines
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Fine'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Get Paid Fines
+      tags:
+      - Fines
+  /fines/unpaid:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all unpaid fines
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Fine'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Get Unpaid Fines
+      tags:
+      - Fines
 schemes:
 - http
 swagger: "2.0"
