@@ -33,5 +33,5 @@ type Message struct {
 }
 
 type Error struct {
-	Error error `json:"error" db:"error"`
+	Error string `json:"error" db:"error"`
 }

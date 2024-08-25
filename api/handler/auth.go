@@ -23,14 +23,14 @@ func (h *authHandler) Register(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&auth); err != nil {
 		h.log.Error("Error occurred while binding json", err)
-		c.JSON(http.StatusBadRequest, models.Error{Error: err})
+		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
 		return
 	}
 
 	err := h.srv.Register(*auth)
 	if err != nil {
 		h.log.Error("Error occurred while register", err)
-		c.JSON(http.StatusInternalServerError, models.Error{Error: err})
+		c.JSON(http.StatusInternalServerError, models.Error{Error: err.Error()})
 		return
 	}
 
@@ -48,20 +48,20 @@ func (h *authHandler) Register(c *gin.Context) {
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
-// @Router /login/email [post]
+// @Router /login [post]
 func (h *authHandler) Login(c *gin.Context) {
 	var auth *models.LoginEmailRequest
 
 	if err := c.ShouldBindJSON(&auth); err != nil {
 		h.log.Error("Error occurred while binding json", err)
-		c.JSON(http.StatusBadRequest, models.Error{Error: err})
+		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
 		return
 	}
 
 	res, err := h.srv.Login(auth)
 	if err != nil {
 		h.log.Error("Error occurred while login", err)
-		c.JSON(http.StatusInternalServerError, models.Error{Error: err})
+		c.JSON(http.StatusInternalServerError, models.Error{Error: err.Error()})
 		return
 	}
 

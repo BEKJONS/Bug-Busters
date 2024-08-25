@@ -124,7 +124,9 @@ const docTemplate = `{
         "models.Error": {
             "type": "object",
             "properties": {
-                "error": {}
+                "error": {
+                    "type": "string"
+                }
             }
         },
         "models.LoginEmailRequest": {

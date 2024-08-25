@@ -2,7 +2,8 @@ basePath: /auth
 definitions:
   models.Error:
     properties:
-      error: {}
+      error:
+        type: string
     type: object
   models.LoginEmailRequest:
     properties:

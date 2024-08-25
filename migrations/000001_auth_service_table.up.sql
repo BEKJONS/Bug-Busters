@@ -37,8 +37,8 @@ CREATE TABLE users
     email             VARCHAR UNIQUE,
     password          VARCHAR,
     role              VARCHAR,
-    created_at        TIMESTAMP,
-    updated_at        TIMESTAMP,
+    created_at        TIMESTAMP DEFAULT now(),
+    updated_at        TIMESTAMP DEFAULT now(),
     deleted_at        BIGINT
 );
 

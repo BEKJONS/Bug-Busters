@@ -1,6 +1,7 @@
 package api
 
 import (
+	_ "bug_busters/api/docs"
 	"bug_busters/api/handler"
 	"bug_busters/internal/service"
 	"bug_busters/pkg/logger"
