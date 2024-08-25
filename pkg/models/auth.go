@@ -1,21 +1,9 @@
 package models
 
 type RegisterRequest struct {
-	FirstName string `json:"first_name" db:"first_name"`
-	LastName  string `json:"last_name" db:"last_name"`
-	Email     string `json:"email" db:"email"`
-	Password  string `json:"password" db:"password"`
-	Phone     string `json:"phone" db:"phone"`
-	Username  string `json:"username" db:"username"`
-}
-
-type RegisterResponse struct {
-	Id        string `json:"id" db:"id"`
-	FirstName string `json:"first_name" db:"first_name"`
-	LastName  string `json:"last_name" db:"last_name"`
-	Email     string `json:"email" db:"email"`
-	Phone     string `json:"phone" db:"phone"`
-	Username  string `json:"username" db:"username"`
+	Email    string `json:"email" db:"email"`
+	Password string `json:"password" db:"password"`
+	Role     string `json:"role" db:"role"`
 }
 
 type LoginEmailRequest struct {
@@ -25,8 +13,6 @@ type LoginEmailRequest struct {
 
 type LoginResponse struct {
 	Id       string `json:"id" db:"id"`
-	Email    string `json:"email" db:"email"`
-	Username string `json:"username" db:"username"`
 	Password string `json:"password" db:"password"`
 	Role     string `json:"role" db:"role"`
 }

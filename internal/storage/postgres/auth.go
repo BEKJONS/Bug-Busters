@@ -16,33 +16,24 @@ func NewAuthRepo(db *sqlx.DB) storage.AuthStorage {
 	}
 }
 
-func (a *AuthRepo) Register(in models.RegisterRequest) (models.RegisterResponse, error) {
+func (a *AuthRepo) Register(in models.RegisterRequest) error {
 
-	var id string
-	query := `INSERT INTO users (phone, email, password,first_name, last_name, username) VALUES ($1, $2, $3,$4, $5, $6) RETURNING id`
-	err := a.db.QueryRow(query, in.Phone, in.Email, in.Password, in.FirstName, in.LastName, in.Username).Scan(&id)
+	query := `INSERT INTO users (email,password,role) VALUES ($1, $2, $3)`
+	err := a.db.QueryRow(query, in.Email, in.Password, in.Role)
 	if err != nil {
-		return models.RegisterResponse{}, err
+		return err.Err()
 	}
 
-	return models.RegisterResponse{
-		Id:        id,
-		FirstName: in.FirstName,
-		LastName:  in.LastName,
-		Email:     in.Email,
-
-		Phone:    in.Phone,
-		Username: in.Username,
-	}, nil
+	return nil
 }
-func (a *AuthRepo) LoginEmail(in models.LoginEmailRequest) (models.LoginResponse, error) {
+func (a *AuthRepo) Login(in *models.LoginEmailRequest) (*models.LoginResponse, error) {
 
-	res := models.LoginResponse{}
+	res := &models.LoginResponse{}
 
-	query := `SELECT id, email,username, password,role FROM users WHERE email = $1`
-	err := a.db.Get(&res, query, in.Email)
+	query := `SELECT id, password, role FROM users WHERE email = $1`
+	err := a.db.Get(res, query, in.Email)
 	if err != nil {
-		return models.LoginResponse{}, err
+		return nil, err
 	}
 
 	return res, nil
