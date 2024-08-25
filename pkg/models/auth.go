@@ -27,11 +27,3 @@ type LicenceNumber struct {
 	UserId        string `json:"userId" db:"user_id"`
 	LicenceNumber string `json:"number" db:"number"`
 }
-
-type Message struct {
-	Message string `json:"message" db:"message"`
-}
-
-type Error struct {
-	Error string `json:"error" db:"error"`
-}

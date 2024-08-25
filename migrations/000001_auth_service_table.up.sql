@@ -11,7 +11,7 @@ CREATE TABLE driver_licenses
     expiration_date DATE,
     category        VARCHAR(50),
     issued_by       VARCHAR(100),
-    license_number  VARCHAR PRIMARY KEY -- Тип VARCHAR, как вы хотите
+    license_number  VARCHAR PRIMARY KEY
 );
 
 -- Затем создаем таблицу cars
@@ -29,19 +29,29 @@ CREATE TABLE cars
     tech_passport_number UUID UNIQUE
 );
 
--- Создаем остальные таблицы
+-- Затем создаем таблицу users
 CREATE TABLE users
 (
-    id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    driver_license VARCHAR REFERENCES driver_licenses (license_number), -- Изменен тип на VARCHAR
-    email             VARCHAR UNIQUE,
-    password          VARCHAR,
-    role              VARCHAR,
-    created_at        TIMESTAMP DEFAULT now(),
-    updated_at        TIMESTAMP DEFAULT now(),
-    deleted_at        BIGINT
+    id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    driver_license VARCHAR REFERENCES driver_licenses (license_number),
+    email          VARCHAR UNIQUE,
+    password       VARCHAR,
+    role           VARCHAR,
+    cars_id        TEXT[],
+    created_at     TIMESTAMP        DEFAULT now(),
+    updated_at     TIMESTAMP        DEFAULT now(),
+    deleted_at     BIGINT
 );
 
+-- Создаем таблицу для связывания пользователей и машин
+CREATE TABLE users_cars
+(
+    user_id UUID REFERENCES users (id),
+    car_id  UUID REFERENCES cars (id),
+    PRIMARY KEY (user_id, car_id)
+);
+
+-- Создаем остальные таблицы
 CREATE TABLE Services
 (
     id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),

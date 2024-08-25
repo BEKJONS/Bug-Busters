@@ -69,3 +69,22 @@ func (h *Handler) Login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, res)
 }
+
+func (h *authHandler) AddLicense(c *gin.Context) {
+	var req *models.LicenceNumber
+
+	if err := c.ShouldBindJSON(req); err != nil {
+		h.log.Error("Error occurred while binding json", err)
+		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
+		return
+	}
+
+	res, err := h.srv.AddLicence(req)
+	if err != nil {
+		h.log.Error("Error occurred while adding license", err)
+		c.JSON(http.StatusInternalServerError, models.Error{Error: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
+}
