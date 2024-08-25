@@ -70,7 +70,7 @@ func (h *Handler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-func (h *authHandler) AddLicense(c *gin.Context) {
+func (h *Handler) AddLicense(c *gin.Context) {
 	var req *models.LicenceNumber
 
 	if err := c.ShouldBindJSON(req); err != nil {
