@@ -16,7 +16,7 @@ import (
 // @description Server for signIn or signUp
 // @BasePath /
 // @schemes http
-func NewRouter(s service.AuthService, i service.IIService, u service.UserService,serv service.IService) *gin.Engine {
+func NewRouter(s service.AuthService, i service.IIService, u service.UserService, serv service.IService) *gin.Engine {
 	r := gin.New()
 	h := handler.NewHandler(logger.NewLogger(), s, i, serv, u)
 
@@ -46,7 +46,7 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 		service.GET("", h.GetAllServices)
 		service.GET("/:id", h.GetService)
 		service.POST("/create", h.CreateService)
-		service.PUT("/update/:id", h.UpdateService)
+		service.PUT("/update", h.UpdateService)
 		service.DELETE("/delete/:id", h.DeleteService)
 	}
 

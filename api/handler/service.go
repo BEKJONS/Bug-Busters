@@ -1,12 +1,13 @@
 package handler
 
 import (
-	"net/http"
 	models "bug_busters/pkg/models"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
+// GetAllServices godoc
 // @Summary Get all services
 // @Description Get all services
 // @Tags service
@@ -24,7 +25,7 @@ func (h *Handler) GetAllServices(c *gin.Context) {
 	c.JSON(http.StatusOK, services)
 }
 
-
+// GetService godoc
 // @Summary Get service
 // @Description Get service
 // @Tags service
@@ -44,6 +45,7 @@ func (h *Handler) GetService(c *gin.Context) {
 	c.JSON(http.StatusOK, service)
 }
 
+// CreateService godoc
 // @Summary Create service
 // @Description Create service
 // @Tags service
@@ -52,7 +54,7 @@ func (h *Handler) GetService(c *gin.Context) {
 // @Param service body models.Service true "service"
 // @Success 200 {object} models.Service
 // @Failure 400 {object} string
-// @Router /service [post]
+// @Router /service/create [post]
 func (h *Handler) CreateService(c *gin.Context) {
 	service := &models.Service{}
 	if err := c.ShouldBindJSON(&service); err != nil {
@@ -68,12 +70,12 @@ func (h *Handler) CreateService(c *gin.Context) {
 	c.JSON(http.StatusOK, service)
 }
 
+// UpdateService godoc
 // @Summary Update service
 // @Description Update service
 // @Tags service
 // @Accept json
-// @Produce jsonGetAllServices
-// @Param id path string true "id"
+// @Produce json
 // @Param service body models.Service true "service"
 // @Success 200 {object} models.Service
 // @Failure 400 {object} string
@@ -93,6 +95,7 @@ func (h *Handler) UpdateService(c *gin.Context) {
 	c.JSON(http.StatusOK, service)
 }
 
+// DeleteService godoc
 // @Summary Delete service
 // @Description Delete service
 // @Tags service
@@ -101,7 +104,7 @@ func (h *Handler) UpdateService(c *gin.Context) {
 // @Param id path string true "id"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} string
-// @Router /service/{id} [delete]
+// @Router /service/delete/{id} [delete]
 func (h *Handler) DeleteService(c *gin.Context) {
 	id := c.Param("id")
 	service, err := h.serv.DeleteService(id)

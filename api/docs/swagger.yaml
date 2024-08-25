@@ -108,6 +108,30 @@ definitions:
       role:
         type: string
     type: object
+  models.Service:
+    properties:
+      address:
+        type: string
+      certificate_number:
+        type: string
+      id:
+        type: string
+      manager_name:
+        type: string
+      name:
+        type: string
+      phone_number:
+        type: string
+      type:
+        type: string
+    type: object
+  models.Services:
+    properties:
+      services:
+        items:
+          $ref: '#/definitions/models.Service'
+        type: array
+    type: object
   models.Tokens:
     properties:
       access_token:
@@ -412,6 +436,127 @@ paths:
       summary: Get Unpaid Fines
       tags:
       - Fines
+  /service:
+    get:
+      consumes:
+      - application/json
+      description: Get all services
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Services'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Get all services
+      tags:
+      - service
+  /service/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get service
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Service'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Get service
+      tags:
+      - service
+  /service/create:
+    post:
+      consumes:
+      - application/json
+      description: Create service
+      parameters:
+      - description: service
+        in: body
+        name: service
+        required: true
+        schema:
+          $ref: '#/definitions/models.Service'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Service'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Create service
+      tags:
+      - service
+  /service/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete service
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Delete service
+      tags:
+      - service
+  /service/update:
+    put:
+      consumes:
+      - application/json
+      description: Update service
+      parameters:
+      - description: service
+        in: body
+        name: service
+        required: true
+        schema:
+          $ref: '#/definitions/models.Service'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Service'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Update service
+      tags:
+      - service
   /user/{id}:
     delete:
       consumes:
