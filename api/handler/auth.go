@@ -20,7 +20,7 @@ import (
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
 // @Router /register [post]
-func (h *authHandler) Register(c *gin.Context) {
+func (h *Handler) Register(c *gin.Context) {
 	var auth *models.RegisterRequest
 
 	if err := c.ShouldBindJSON(&auth); err != nil {
@@ -51,7 +51,7 @@ func (h *authHandler) Register(c *gin.Context) {
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
 // @Router /login [post]
-func (h *authHandler) Login(c *gin.Context) {
+func (h *Handler) Login(c *gin.Context) {
 	var auth *models.LoginEmailRequest
 
 	if err := c.ShouldBindJSON(&auth); err != nil {

@@ -61,8 +61,8 @@ CREATE TABLE Fines
     officer_id           UUID REFERENCES users (id),
     fine_owner           UUID REFERENCES users (id),
     fine_date            TIMESTAMP,
-    payment_date         TIMESTAMP,
-    user_id              UUID REFERENCES users (id)
+    price                int,
+    payment_date         TIMESTAMP
 );
 
 CREATE TABLE Services_Provided
