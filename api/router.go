@@ -38,6 +38,16 @@ func NewRouter(s service.AuthService, i service.IIService) *gin.Engine {
 		fines.GET("/unpaid", h.GetUnpaidFines)
 		fines.GET("", h.GetAllFines) // Get all fines with optional pagination
 	}
+	// User routes
+	user := r.Group("/user")
+	{
+		user.GET("/profile/:id", h.GetProfile)          // Get user profile by ID
+		user.POST("/image", h.AddImage)                 // Add car image
+		user.GET("/image/:id", h.GetImage)              // Get car image by user ID
+		user.GET("/paid_fines/:id", h.GetPaidFines)     // Get paid fines by user ID
+		user.GET("/unpaid_fines/:id", h.GetUnpaidFines) // Get unpaid fines by user ID
+		user.DELETE("/:id", h.DeleteUser)               // Delete user by ID
+	}
 
 	return r
 }
