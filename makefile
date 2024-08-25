@@ -1,4 +1,4 @@
-DATABASE_URL := postgres://postgres:BEKJONS@localhost:5432/auth_i?sslmode=disable
+DATABASE_URL := postgres://postgres:BEKJONS@localhost:5432/road_24?sslmode=disable
 
 tidy:
 	@go mod tidy
