@@ -75,18 +75,25 @@ func (h *Handler) AcceptFinesById(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
-// @Param Pagination query models.Pagination true "Pagination"
+// @Param page query int true "Pagination"
+// @Param limit query int true "Limit"
 // @Success 200 {object} models.Fines
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 // @Router /fines/paid [get]
 func (h *Handler) GetPaidFines(c *gin.Context) {
 	var pagination models.Pagination
-	if err := c.ShouldBindQuery(&pagination); err != nil {
-		h.log.Error("Error occurred while binding query", err)
-		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
-		return
+	page, err := strconv.Atoi(c.Query("page"))
+	if err != nil {
+		page = 1
 	}
+	pagination.Page = page
+
+	limit, err := strconv.Atoi(c.Query("limit"))
+	if err != nil {
+		limit = 10
+	}
+	pagination.Limit = limit
 
 	fines, err := h.ii.GetPaidFines(pagination)
 	if err != nil {
@@ -104,18 +111,26 @@ func (h *Handler) GetPaidFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
-// @Param Pagination query models.Pagination true "Pagination"
+// @Param page query int true "Pagination"
+// @Param limit query int true "Limit"
 // @Success 200 {object} models.Fines
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 // @Router /fines/unpaid [get]
 func (h *Handler) GetUnpaidFines(c *gin.Context) {
 	var pagination models.Pagination
-	if err := c.ShouldBindQuery(&pagination); err != nil {
-		h.log.Error("Error occurred while binding query", err)
-		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
-		return
+	page, err := strconv.Atoi(c.Query("page"))
+	if err != nil {
+		page = 1
 	}
+	pagination.Page = page
+
+	limit, err := strconv.Atoi(c.Query("limit"))
+	if err != nil {
+		limit = 10
+	}
+	pagination.Limit = limit
+
 
 	fines, err := h.ii.GetUnpaidFines(pagination)
 	if err != nil {
@@ -147,7 +162,7 @@ func (h *Handler) GetAllFines(c *gin.Context) {
 		page = 1
 	}
 	pagination.Page = page
-	
+
 	limit, err := strconv.Atoi(c.Query("limit"))
 	if err != nil {
 		limit = 10
