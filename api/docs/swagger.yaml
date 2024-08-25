@@ -141,13 +141,6 @@ definitions:
       refresh_token:
         type: string
     type: object
-  models.UpdateCarImage:
-    properties:
-      url:
-        type: string
-      user_id:
-        type: string
-    type: object
   models.Url:
     properties:
       url:
@@ -557,6 +550,44 @@ paths:
       summary: Update service
       tags:
       - service
+  /upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Uploads an image to MinIO and returns the URL of the uploaded image
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Image file to upload
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The URL of the uploaded image
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Upload Image
   /user/{id}:
     delete:
       consumes:
@@ -588,36 +619,6 @@ paths:
           schema:
             $ref: '#/definitions/models.Error'
       summary: Delete User
-      tags:
-      - User
-  /user/image:
-    post:
-      consumes:
-      - application/json
-      description: Upload a new car image
-      parameters:
-      - description: Car Image
-        in: body
-        name: image
-        required: true
-        schema:
-          $ref: '#/definitions/models.UpdateCarImage'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Message'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.Error'
-      summary: Add Car Image
       tags:
       - User
   /user/image/{id}:

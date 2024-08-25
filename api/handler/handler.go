@@ -22,6 +22,8 @@ type Handlers interface {
 	GetService(c *gin.Context)
 	GetAllServices(c *gin.Context)
 	DeleteService(c *gin.Context)
+
+	AddImage(c *gin.Context)
 }
 
 type Handler struct {

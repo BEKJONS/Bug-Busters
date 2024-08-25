@@ -586,47 +586,58 @@
                 }
             }
         },
-        "/user/image": {
+        "/upload": {
             "post": {
-                "description": "Upload a new car image",
+                "description": "Uploads an image to MinIO and returns the URL of the uploaded image",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Add Car Image",
+                "summary": "Upload Image",
                 "parameters": [
                     {
-                        "description": "Car Image",
-                        "name": "image",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.UpdateCarImage"
-                        }
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Image file to upload",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "The URL of the uploaded image",
                         "schema": {
-                            "$ref": "#/definitions/models.Message"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request",
                         "schema": {
-                            "$ref": "#/definitions/models.Error"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/models.Error"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -1104,17 +1115,6 @@
                     "$ref": "#/definitions/models.LoginResponse"
                 },
                 "refresh_token": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.UpdateCarImage": {
-            "type": "object",
-            "properties": {
-                "url": {
-                    "type": "string"
-                },
-                "user_id": {
                     "type": "string"
                 }
             }

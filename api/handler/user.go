@@ -2,8 +2,21 @@ package handler
 
 import (
 	"bug_busters/pkg/models"
+	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/minio/minio-go/v7"
+	"github.com/minio/minio-go/v7/pkg/credentials"
+	"mime"
 	"net/http"
+	"path/filepath"
+)
+
+const (
+	MinioEndpoint  = "3.125.33.48:9000" // Используйте порт для API-запросов
+	MinioAccessKey = "minioadmin"
+	MinioSecretKey = "minioadmin"
+	BucketName     = "car"
 )
 
 // GetProfile godoc
@@ -29,32 +42,75 @@ func (h *Handler) GetProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, profile)
 }
 
-// AddImage godoc
-// @Summary Add Car Image
-// @Description Upload a new car image
-// @Tags User
-// @Accept json
+// @Summary Upload Image
+// @Description Uploads an image to MinIO and returns the URL of the uploaded image
+// @Accept multipart/form-data
 // @Produce json
-// @Param image body models.UpdateCarImage true "Car Image"
-// @Success 200 {object} models.Message
-// @Failure 400 {object} models.Error
-// @Failure 500 {object} models.Error
-// @Router /user/image [post]
+// @Param id path string true "ID"
+// @Param file formData file true "Image file to upload"
+// @Success 200 {object} map[string]string "The URL of the uploaded image"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Router /upload [post]
 func (h *Handler) AddImage(c *gin.Context) {
-	var req models.UpdateCarImage
-	if err := c.ShouldBindJSON(&req); err != nil {
-		h.log.Error("Error occurred while binding JSON", err)
-		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
+	file, err := c.FormFile("file")
+	if err != nil {
+		h.log.Error("Failed to get file", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	msg, err := h.user.AddImage(&req)
+	objectName := "cars/" + file.Filename
+
+	// Инициализация MinIO клиента
+	minioClient, err := minio.New(MinioEndpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(MinioAccessKey, MinioSecretKey, ""),
+		Secure: false, // Установите true, если используете HTTPS
+	})
 	if err != nil {
-		h.log.Error("Failed to add image", err)
-		c.JSON(http.StatusInternalServerError, models.Error{Error: err.Error()})
+		h.log.Error("Failed to create MinIO client", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, msg)
+
+	// Открытие файла
+	OpenFile, err := file.Open()
+	if err != nil {
+		h.log.Error("Failed to open file", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	defer OpenFile.Close() // Закрытие файла после завершения работы
+
+	// Определение типа содержимого файла
+	contentType := mime.TypeByExtension(filepath.Ext(file.Filename))
+
+	// Загрузка файла в MinIO
+	_, err = minioClient.PutObject(context.Background(), BucketName, objectName, OpenFile, file.Size, minio.PutObjectOptions{
+		ContentType: contentType,
+	})
+	if err != nil {
+		h.log.Error("Failed to upload file", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	fileURL := fmt.Sprintf("http://%s/%s/%s", MinioEndpoint, BucketName, objectName)
+
+	req := &models.UpdateCarImage{
+		Url:    fileURL,
+		UserId: c.Param("id"),
+	}
+
+	res, err := h.user.AddImage(req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		h.log.Error("Failed to add image", err)
+		return
+	}
+
+	// Создание URL для доступа к файлу
+	c.JSON(http.StatusOK, gin.H{"file_url": fileURL, "message": res.Message})
 }
 
 // GetImage godoc
