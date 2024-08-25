@@ -27,3 +27,8 @@ type DriverLicence struct {
 	IssuedBy       string `json:"issued_by" db:"issued_by"`
 	LicenceNumber  string `json:"licence_number" db:"licence_number"`
 }
+
+type UpdateCarImage struct {
+	UserId string `json:"user_id" db:"user_id"`
+	Url    string `json:"url" db:"url"`
+}

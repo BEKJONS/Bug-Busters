@@ -26,3 +26,23 @@ func (u *userRepo) GetProfile(id models.UserId) (models.UserProfile, error) {
 
 	return users, nil
 }
+
+func (u *userRepo) AddImage(in *models.UpdateCarImage) error {
+
+	_, err := u.db.Exec("update cars set image_url = $1 where user_id = $2", in.Url, in.UserId)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (u *userRepo) GetImage(useId string) (string, error) {
+	var url string
+	err := u.db.Get(&url, `SELECT image_url FROM cars WHERE user_id = $1`, useId)
+	if err != nil {
+		return "", err
+	}
+
+	return url, nil
+}

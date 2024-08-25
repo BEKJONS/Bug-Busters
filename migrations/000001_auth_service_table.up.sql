@@ -15,21 +15,6 @@ CREATE TABLE driver_licenses
 );
 
 -- Затем создаем таблицу cars
-CREATE TABLE cars
-(
-    id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    type                 VARCHAR(100),
-    model                VARCHAR(100),
-    color                VARCHAR(50),
-    year                 INT,
-    body_number          VARCHAR(100) UNIQUE,
-    engine_number        VARCHAR(100) UNIQUE,
-    horsepower           INT,
-    license_plate        VARCHAR(100) UNIQUE,
-    tech_passport_number UUID UNIQUE
-);
-
--- Затем создаем таблицу users
 CREATE TABLE users
 (
     id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -37,18 +22,26 @@ CREATE TABLE users
     email          VARCHAR UNIQUE,
     password       VARCHAR,
     role           VARCHAR,
-    cars_id        TEXT[],
     created_at     TIMESTAMP        DEFAULT now(),
     updated_at     TIMESTAMP        DEFAULT now(),
     deleted_at     BIGINT
 );
 
--- Создаем таблицу для связывания пользователей и машин
-CREATE TABLE users_cars
+-- Затем создаем таблицу users
+CREATE TABLE cars
 (
-    user_id UUID REFERENCES users (id),
-    car_id  UUID REFERENCES cars (id),
-    PRIMARY KEY (user_id, car_id)
+    id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id uuid references users(id),
+    type                 VARCHAR(100),
+    model                VARCHAR(100),
+    color                VARCHAR(50),
+    year                 INT,
+    body_number          VARCHAR(100) UNIQUE,
+    engine_number        VARCHAR(100) UNIQUE,
+    horsepower           INT,
+    image_url            varchar,
+    license_plate        VARCHAR(100) UNIQUE,
+    tech_passport_number UUID UNIQUE
 );
 
 -- Создаем остальные таблицы
