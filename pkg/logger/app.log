@@ -5,3 +5,5 @@ time=2024-08-25T15:13:41.852+05:00 level=ERROR msg="Failed to register user" err
 time=2024-08-25T15:13:41.852+05:00 level=ERROR msg="Error occurred while register" !BADKEY="pq: password authentication failed for user \"postgres\""
 time=2024-08-25T15:14:57.737+05:00 level=ERROR msg="Failed to register user" error="pq: password authentication failed for user \"postgres\""
 time=2024-08-25T15:14:57.737+05:00 level=ERROR msg="Error occurred while register" !BADKEY="pq: password authentication failed for user \"postgres\""
+time=2024-08-25T15:20:15.382+05:00 level=ERROR msg="Failed to register user" error="pq: duplicate key value violates unique constraint \"users_email_key\""
+time=2024-08-25T15:20:15.382+05:00 level=ERROR msg="Error occurred while register" !BADKEY="pq: duplicate key value violates unique constraint \"users_email_key\""

@@ -66,7 +66,7 @@ func (a *authService) Login(in *models.LoginEmailRequest) (*models.Tokens, error
 		a.log.Error("Failed to generate access token", "error", err)
 		return nil, err
 	}
-
+	res.Password = in.Password
 	response := &models.Tokens{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,

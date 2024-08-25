@@ -11,7 +11,7 @@
     },
     "basePath": "/auth",
     "paths": {
-        "/login/email": {
+        "/login": {
             "post": {
                 "description": "sign in user",
                 "consumes": [
