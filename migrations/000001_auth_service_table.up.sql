@@ -1,7 +1,7 @@
 -- Сначала создаем таблицу driver_licenses
 CREATE TABLE driver_licenses
 (
-    id              UUID PRIMARY KEY,
+    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     first_name      VARCHAR(100),
     last_name       VARCHAR(100),
     father_name     VARCHAR(100),
@@ -17,7 +17,7 @@ CREATE TABLE driver_licenses
 -- Затем создаем таблицу cars
 CREATE TABLE cars
 (
-    id                   UUID PRIMARY KEY,
+    id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     type                 VARCHAR(100),
     model                VARCHAR(100),
     color                VARCHAR(50),
@@ -32,7 +32,7 @@ CREATE TABLE cars
 -- Создаем остальные таблицы
 CREATE TABLE users
 (
-    id                UUID PRIMARY KEY,
+    id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     driver_license_id UUID REFERENCES driver_licenses (id), -- Ссылка на driver_licenses
     email             VARCHAR UNIQUE,
     password          VARCHAR,
@@ -44,7 +44,7 @@ CREATE TABLE users
 
 CREATE TABLE Services
 (
-    id                 UUID PRIMARY KEY,
+    id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     type               VARCHAR(100),
     name               VARCHAR(100),
     certificate_number VARCHAR(100) UNIQUE,
@@ -55,7 +55,7 @@ CREATE TABLE Services
 
 CREATE TABLE Fines
 (
-    id                   UUID PRIMARY KEY,
+    id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tech_passport_number UUID REFERENCES cars (tech_passport_number),  -- Ссылка на cars
     license_plate        VARCHAR(100) REFERENCES cars (license_plate), -- Ссылка на cars
     officer_id           UUID REFERENCES users (id),                   -- Ссылка на users
@@ -67,7 +67,7 @@ CREATE TABLE Fines
 
 CREATE TABLE Services_Provided
 (
-    id              SERIAL PRIMARY KEY,
+    id              SERIAL PRIMARY KEY DEFAULT gen_random_uuid(),
     license_plate   VARCHAR(100) REFERENCES cars (license_plate), -- Ссылка на cars
     service_type    VARCHAR(100),
     service_date    DATE,

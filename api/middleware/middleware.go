@@ -1,9 +1,10 @@
 package middleware
 
 import (
+	"github.com/casbin/casbin/v2"
 	_ "github.com/casbin/casbin/v2"
 
-	"api-gateway/pkg/token"
+	"bug_busters/pkg/token"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -18,7 +19,7 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		claims, err := token.ExtractClaims(stringToken)
+		claims, err := token.ExtractAccessClaims(stringToken)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 			c.Abort()
