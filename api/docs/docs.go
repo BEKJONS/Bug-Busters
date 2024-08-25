@@ -181,14 +181,12 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
+                        "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "description": "Number of records per page",
-                        "name": "limit",
+                        "name": "page",
                         "in": "query"
                     }
                 ],
@@ -261,6 +259,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/fines/:id/accept": {
+            "put": {
+                "description": "Accept a fine by updating its payment date",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fines"
+                ],
+                "summary": "Accept Fines By ID",
+                "parameters": [
+                    {
+                        "description": "Accept fine",
+                        "name": "FineAccept",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.FineAccept"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/fines/paid": {
             "get": {
                 "description": "Retrieve all paid fines",
@@ -277,13 +321,17 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "name": "limit",
-                        "in": "query"
+                        "description": "Pagination",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "integer",
-                        "name": "page",
-                        "in": "query"
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -304,6 +352,41 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/fines/send_acceptation": {
+            "post": {
+                "description": "Retrieve the ID of the accepted fine",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fines"
+                ],
+                "summary": "Accept a fine by ID",
+                "responses": {
+                    "200": {
+                        "description": "Accepted fine ID",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/models.Error"
                         }
@@ -327,13 +410,17 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "name": "limit",
-                        "in": "query"
+                        "description": "Pagination",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "integer",
-                        "name": "page",
-                        "in": "query"
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -344,59 +431,6 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/models.Fine"
                             }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.Error"
-                        }
-                    }
-                }
-            }
-        },
-        "/fines/{id}/accept": {
-            "put": {
-                "description": "Accept a fine by updating its payment date",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Fines"
-                ],
-                "summary": "Accept Fines By ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Fine ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Accept fine",
-                        "name": "FineAccept",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.FineAccept"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Message"
                         }
                     },
                     "400": {

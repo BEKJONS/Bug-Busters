@@ -48,7 +48,7 @@ func (h *Handler) CreateFines(c *gin.Context) {
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
-// @Router /fines/:id/accept [post]
+// @Router /fines/:id/accept [put]
 func (h *Handler) AcceptFinesById(c *gin.Context) {
 	var accept models.FineAccept
 
