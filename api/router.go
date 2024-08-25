@@ -5,6 +5,7 @@ import (
 	"bug_busters/api/handler"
 	"bug_busters/internal/service"
 	"bug_busters/pkg/logger"
+
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -15,9 +16,9 @@ import (
 // @description Server for signIn or signUp
 // @BasePath /
 // @schemes http
-func NewRouter(s service.AuthService, i service.IIService, u service.UserService) *gin.Engine {
+func NewRouter(s service.AuthService, i service.IIService, u service.UserService,serv service.IService) *gin.Engine {
 	r := gin.New()
-	h := handler.NewHandler(logger.NewLogger(), s, i, u)
+	h := handler.NewHandler(logger.NewLogger(), s, i, serv, u)
 
 	// Swagger UI route
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -39,15 +40,14 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 		fines.GET("/unpaid", h.GetUnpaidFines)
 		fines.GET("", h.GetAllFines) // Get all fines with optional pagination
 	}
-	// User routes
-	user := r.Group("/user")
+	// Service routes
+	service := r.Group("/service")
 	{
-		user.GET("/profile/:id", h.GetProfile)          // Get user profile by ID
-		user.POST("/image", h.AddImage)                 // Add car image
-		user.GET("/image/:id", h.GetImage)              // Get car image by user ID
-		user.GET("/paid_fines/:id", h.GetPaidFinesU)    // Get paid fines by user ID
-		user.GET("/unpaid_fines/:id", h.GetUnpaidFines) // Get unpaid fines by user ID
-		user.DELETE("/:id", h.DeleteUser)               // Delete user by ID
+		service.GET("", h.GetAllServices)
+		service.GET("/:id", h.GetService)
+		service.POST("/create", h.CreateService)
+		service.PUT("/update/:id", h.UpdateService)
+		service.DELETE("/delete/:id", h.DeleteService)
 	}
 
 	return r
