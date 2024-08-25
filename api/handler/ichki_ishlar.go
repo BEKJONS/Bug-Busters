@@ -42,15 +42,19 @@ func (h *Handler) CreateFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
-// @Param id path string true "ID"
+// @Param FineAccept body models.FineAccept true "Accept fine"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
-// @Router /fines/{id}/accept [put]
+// @Router /fines/:id/accept [post]
 func (h *Handler) AcceptFinesById(c *gin.Context) {
 	var accept models.FineAccept
 
-	accept.Id = c.Param("id")
+	if err := c.ShouldBindJSON(&accept); err != nil {
+		h.log.Error("Error occurred while binding json", err)
+		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
+		return
+	}
 
 	err := h.ii.AcceptFinesById(accept)
 	if err != nil {
@@ -158,7 +162,7 @@ func (h *Handler) GetAllFines(c *gin.Context) {
 // @Success 200 {object} models.Message "Accepted fine ID"
 // @Failure 400 {object} models.Error "Bad request"
 // @Failure 500 {object} models.Error "Internal server error"
-// @Router /fines [post]
+// @Router /fines/send_acceptation [post]
 func (h *Handler) SendAcceptation(c *gin.Context) {
 	id := c.MustGet("id").(string)
 	c.JSON(http.StatusOK, models.Message{Message: id})

@@ -49,6 +49,11 @@ definitions:
       tech_passport_number:
         type: string
     type: object
+  models.FineAccept:
+    properties:
+      id:
+        type: string
+    type: object
   models.FineReq:
     properties:
       fine_date:
@@ -282,11 +287,13 @@ paths:
       - application/json
       description: Retrieve all fines
       parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
+      - description: Page number
+        in: query
         name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: limit
         type: integer
       produces:
       - application/json
@@ -343,11 +350,17 @@ paths:
       - application/json
       description: Accept a fine by updating its payment date
       parameters:
-      - description: ID
+      - description: Fine ID
         in: path
         name: id
         required: true
-        type: string
+        type: integer
+      - description: Accept fine
+        in: body
+        name: FineAccept
+        required: true
+        schema:
+          $ref: '#/definitions/models.FineAccept'
       produces:
       - application/json
       responses:

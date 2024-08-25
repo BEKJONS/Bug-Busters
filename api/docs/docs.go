@@ -181,12 +181,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "name": "limit",
+                        "description": "Page number",
+                        "name": "page",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "name": "page",
+                        "description": "Number of records per page",
+                        "name": "limit",
                         "in": "query"
                     }
                 ],
@@ -374,11 +376,20 @@ const docTemplate = `{
                 "summary": "Accept Fines By ID",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "ID",
+                        "type": "integer",
+                        "description": "Fine ID",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Accept fine",
+                        "name": "FineAccept",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.FineAccept"
+                        }
                     }
                 ],
                 "responses": {
@@ -963,6 +974,14 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "tech_passport_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.FineAccept": {
+            "type": "object",
+            "properties": {
+                "id": {
                     "type": "string"
                 }
             }
