@@ -15,14 +15,23 @@ type Handlers interface {
 	GetPaidFines(c *gin.Context)
 	GetUnpaidFines(c *gin.Context)
 	GetAllFines(c *gin.Context)
+
+	GetProfile(c *gin.Context)
+	AddImage(c *gin.Context)
+	GetImage(c *gin.Context)
+	GetPaidFinesU(c *gin.Context)
+	GetUnpaid(c *gin.Context)
+	DeleteUser(c *gin.Context)
 }
 
 type Handler struct {
-	srv service.AuthService
-	ii  service.IIService
+	auth service.AuthService
+	ii   service.IIService
+	user service.UserService
+
 	log *slog.Logger
 }
 
 func NewHandler(log *slog.Logger, sr service.AuthService, II service.IIService) Handlers {
-	return &Handler{log: log, srv: sr, ii: II}
+	return &Handler{log: log, auth: sr, ii: II}
 }

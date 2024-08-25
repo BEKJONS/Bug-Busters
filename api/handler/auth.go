@@ -29,7 +29,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	err := h.srv.Register(*auth)
+	err := h.auth.Register(*auth)
 	if err != nil {
 		h.log.Error("Error occurred while register", err)
 		c.JSON(http.StatusInternalServerError, models.Error{Error: err.Error()})
@@ -60,7 +60,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	res, err := h.srv.Login(auth)
+	res, err := h.auth.Login(auth)
 	if err != nil {
 		h.log.Error("Error occurred while login", err)
 		c.JSON(http.StatusInternalServerError, models.Error{Error: err.Error()})
@@ -90,7 +90,7 @@ func (h *Handler) AddLicense(c *gin.Context) {
 		return
 	}
 
-	res, err := h.srv.AddLicence(req)
+	res, err := h.auth.AddLicence(req)
 	if err != nil {
 		h.log.Error("Error occurred while adding license", err)
 		c.JSON(http.StatusInternalServerError, models.Error{Error: err.Error()})
