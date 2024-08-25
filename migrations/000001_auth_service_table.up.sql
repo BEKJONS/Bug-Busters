@@ -67,7 +67,7 @@ CREATE TABLE Fines
 
 CREATE TABLE Services_Provided
 (
-    id              SERIAL PRIMARY KEY DEFAULT gen_random_uuid(),
+    id              UUId PRIMARY KEY DEFAULT gen_random_uuid(),
     license_plate   VARCHAR(100) REFERENCES cars (license_plate), -- Ссылка на cars
     service_type    VARCHAR(100),
     service_date    DATE,
