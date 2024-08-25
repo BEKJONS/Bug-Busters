@@ -1,18 +1,18 @@
 {
-    "schemes": [
-        "http"
-    ],
     "swagger": "2.0",
     "info": {
-        "description": "Server for signIn or signUp",
         "title": "Authentication service",
         "contact": {},
         "version": "1.0"
     },
-    "basePath": "/",
     "paths": {
         "/auth/add_license": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Add a new license to the system",
                 "consumes": [
                     "application/json"
@@ -59,6 +59,11 @@
         },
         "/auth/login": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "sign in user",
                 "consumes": [
                     "application/json"
@@ -111,6 +116,11 @@
         },
         "/auth/register": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "create users",
                 "consumes": [
                     "application/json"
@@ -163,6 +173,11 @@
         },
         "/fines": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all fines",
                 "consumes": [
                     "application/json"
@@ -211,6 +226,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create a new fine",
                 "consumes": [
                     "application/json"
@@ -257,6 +277,11 @@
         },
         "/fines/:id/accept": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Accept a fine by updating its payment date",
                 "consumes": [
                     "application/json"
@@ -303,6 +328,11 @@
         },
         "/fines/paid": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all paid fines",
                 "consumes": [
                     "application/json"
@@ -319,15 +349,13 @@
                         "type": "integer",
                         "description": "Pagination",
                         "name": "page",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Limit",
                         "name": "limit",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -357,6 +385,11 @@
         },
         "/fines/send_acceptation": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve the ID of the accepted fine",
                 "consumes": [
                     "application/json"
@@ -392,6 +425,11 @@
         },
         "/fines/unpaid": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all unpaid fines",
                 "consumes": [
                     "application/json"
@@ -408,15 +446,13 @@
                         "type": "integer",
                         "description": "Pagination",
                         "name": "page",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Limit",
                         "name": "limit",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -446,6 +482,11 @@
         },
         "/service": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get all services",
                 "consumes": [
                     "application/json"
@@ -475,6 +516,11 @@
         },
         "/service/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create service",
                 "consumes": [
                     "application/json"
@@ -515,6 +561,11 @@
         },
         "/service/delete/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete service",
                 "consumes": [
                     "application/json"
@@ -553,6 +604,11 @@
         },
         "/service/update": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Update service",
                 "consumes": [
                     "application/json"
@@ -593,6 +649,11 @@
         },
         "/service/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get service",
                 "consumes": [
                     "application/json"
@@ -631,6 +692,11 @@
         },
         "/user/image": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Upload a new car image",
                 "consumes": [
                     "application/json"
@@ -677,6 +743,11 @@
         },
         "/user/image/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve the image of a user's car",
                 "consumes": [
                     "application/json"
@@ -727,6 +798,11 @@
         },
         "/user/paid_fines/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all paid fines for a user",
                 "consumes": [
                     "application/json"
@@ -780,6 +856,11 @@
         },
         "/user/profile/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve the profile of a user",
                 "consumes": [
                     "application/json"
@@ -830,6 +911,11 @@
         },
         "/user/unpaid_fines/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all unpaid fines for a user",
                 "consumes": [
                     "application/json"
@@ -883,6 +969,11 @@
         },
         "/user/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete a user by ID",
                 "consumes": [
                     "application/json"
@@ -1206,6 +1297,14 @@
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "description": "Server for signIn or signUp",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

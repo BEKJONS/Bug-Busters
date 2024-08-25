@@ -3,9 +3,11 @@ package api
 import (
 	_ "bug_busters/api/docs"
 	"bug_busters/api/handler"
+	"bug_busters/api/middleware"
 	"bug_busters/internal/service"
 	"bug_busters/pkg/logger"
 
+	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -13,11 +15,15 @@ import (
 
 // @title Authentication service
 // @version 1.0
+// @securityDefinitions.apikey ApiKeyAuth
 // @description Server for signIn or signUp
-// @BasePath /
+// @in header
+// @name Authorization
 // @schemes http
-func NewRouter(s service.AuthService, i service.IIService, u service.UserService, serv service.IService) *gin.Engine {
+// @BasePath /
+func NewRouter(s service.AuthService, i service.IIService, u service.UserService, serv service.IService, enf *casbin.Enforcer) *gin.Engine {
 	r := gin.New()
+	//r.Use(middleware.CORSMiddleware())
 	h := handler.NewHandler(logger.NewLogger(), s, i, serv, u)
 
 	// Swagger UI route
@@ -30,7 +36,7 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 		auth.POST("/login", h.Login)
 		auth.POST("/add_license", h.AddLicense)
 	}
-
+	r.Use(middleware.PermissionMiddleware(enf))
 	// Fines routes
 	fines := r.Group("/fines")
 	{

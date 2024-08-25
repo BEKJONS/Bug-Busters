@@ -14,6 +14,7 @@ import (
 // @Tags Fines
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param Fine body models.FineReq true "Create fine"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error
@@ -44,6 +45,7 @@ func (h *Handler) CreateFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param FineAccept body models.FineAccept true "Accept fine"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error
@@ -74,8 +76,9 @@ func (h *Handler) AcceptFinesById(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
-// @Param page query int true "Pagination"
-// @Param limit query int true "Limit"
+// @Security ApiKeyAuth
+// @Param page query int false "Pagination"
+// @Param limit query int false "Limit"
 // @Success 200 {object} models.Fines
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
@@ -110,8 +113,9 @@ func (h *Handler) GetPaidFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
-// @Param page query int true "Pagination"
-// @Param limit query int true "Limit"
+// @Security ApiKeyAuth
+// @Param page query int false "Pagination"
+// @Param limit query int false "Limit"
 // @Success 200 {object} models.Fines
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
@@ -146,6 +150,7 @@ func (h *Handler) GetUnpaidFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param Pagination query models.Pagination true "Pagination"
 // @Success 200 {object} models.Fines
 // @Failure 400 {object} models.Error
@@ -182,6 +187,7 @@ func (h *Handler) GetAllFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Success 200 {object} models.Message "Accepted fine ID"
 // @Failure 400 {object} models.Error "Bad request"
 // @Failure 500 {object} models.Error "Internal server error"

@@ -2,8 +2,9 @@ package handler
 
 import (
 	"bug_busters/pkg/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // GetProfile godoc
@@ -34,6 +35,7 @@ func (h *Handler) GetProfile(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param id path string true "User ID"
 // @Success 200 {object} models.UserProfile
 // @Failure 400 {object} models.Error
@@ -57,6 +59,7 @@ func (h *Handler) GetProfileAdmin(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param image body models.UpdateCarImage true "Car Image"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error
@@ -85,6 +88,7 @@ func (h *Handler) AddImage(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param id path string true "User ID"
 // @Success 200 {object} models.Url
 // @Failure 400 {object} models.Error
@@ -108,6 +112,7 @@ func (h *Handler) GetImage(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param id path string true "User ID"
 // @Success 200 {array} models.UserFines
 // @Failure 400 {object} models.Error
@@ -154,6 +159,7 @@ func (h *Handler) GetPaidFinesAdmin(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param id path string true "User ID"
 // @Success 200 {array} models.UserFines
 // @Failure 400 {object} models.Error
@@ -200,6 +206,7 @@ func (h *Handler) GetUnpaidAdmin(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param id path string true "User ID"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error

@@ -33,6 +33,8 @@ WORKDIR /app
 # Copy the built Go binary and other files from the builder stage
 COPY --from=builder /app .
 COPY --from=builder /app/main .
+COPY --from=builder /app/pkg/casbin/model.conf ./pkg/casbin/
+COPY --from=builder /app/pkg/casbin/policy.csv ./pkg/casbin/
 COPY --from=builder /wait-for-it.sh /wait-for-it.sh
 
 # Create a directory for logs

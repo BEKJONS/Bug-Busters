@@ -41,7 +41,7 @@ func (u *userService) AddImage(in *models.UpdateCarImage) (models.Message, error
 		return models.Message{}, err
 	}
 
-	return models.Message{"Image added"}, nil
+	return models.Message{Message: "Image added"}, nil
 }
 
 func (u *userService) GetImage(in models.UserId) (models.Url, error) {
@@ -81,5 +81,5 @@ func (u *userService) DeleteUser(in models.UserId) (models.Message, error) {
 		return models.Message{}, err
 	}
 
-	return models.Message{"User deleted"}, nil
+	return models.Message{Message: "User deleted"}, nil
 }
