@@ -22,6 +22,7 @@ func main() {
 	serv := service.NewAuthService(postgres.NewAuthRepo(db), logger)
 	servi := service.NewIIService(postgres.NewIIRepo(db), logger)
 	servu := service.NewUserService(logger, postgres.NewUserRepo(db))
+	servs := service.NewService(postgres.NewServiceRepo(db))
 	router := api.NewRouter(serv, servi, servu)
 	err = router.Run(":8080")
 

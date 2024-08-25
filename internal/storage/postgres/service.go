@@ -1,17 +1,19 @@
 package postgres
 
 import (
-	"bug_busters/pkg/models"
 	"bug_busters/internal/storage"
+	"bug_busters/pkg/models"
 	"database/sql"
 	"errors"
+
+	"github.com/jmoiron/sqlx"
 )
 
 type ServiceRepo struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
-func NewServiceRepo(db *sql.DB) storage.ServiceStorage {
+func NewServiceRepo(db *sqlx.DB) storage.ServiceStorage {
 	return &ServiceRepo{
 		db: db,
 	}

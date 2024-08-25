@@ -13,7 +13,7 @@ type IService interface {
 	GetServices() (*models.Services, error)
 }
 
-func newService(st storage.ServiceStorage) IService {
+func NewService(st storage.ServiceStorage) IService {
 	return &service{storage: st}
 }
 

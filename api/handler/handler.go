@@ -28,9 +28,10 @@ type Handler struct {
 	srv service.AuthService
 	ii  service.IIService
 	serv service.IService
+	user service.UserService
 	log *slog.Logger
 }
 
-func NewHandler(log *slog.Logger, sr service.AuthService, II service.IIService, serv service.IService) Handlers {
-	return &Handler{log: log, srv: sr, ii: II, serv: serv}
+func NewHandler(log *slog.Logger, sr service.AuthService, II service.IIService, serv service.IService, user service.UserService) Handlers {
+	return &Handler{log: log, srv: sr, ii: II, serv: serv, user: user}
 }
