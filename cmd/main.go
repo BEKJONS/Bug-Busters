@@ -23,7 +23,7 @@ func main() {
 	servi := service.NewIIService(postgres.NewIIRepo(db), logger)
 	servu := service.NewUserService(logger, postgres.NewUserRepo(db))
 	router := api.NewRouter(serv, servi, servu)
-	err = router.Run(":8080")
+	err = router.Run(cfg.GIN_PORT)
 
 	if err != nil {
 		logger.Error("error in router", "error", err)

@@ -27,6 +27,7 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 	{
 		auth.POST("/register", h.Register)
 		auth.POST("/login", h.Login)
+		auth.POST("/add_license", h.AddLicense)
 	}
 
 	// Fines routes

@@ -33,7 +33,7 @@ func Load() Config {
 
 	config := Config{}
 
-	config.GIN_PORT = cast.ToString(coalesce("AUTH_PORT", ":8080"))
+	config.GIN_PORT = cast.ToString(coalesce("GIN_PORT", ":8080"))
 
 	config.DB_HOST = cast.ToString(coalesce("DB_HOST", "localhost"))
 	config.DB_PORT = cast.ToString(coalesce("DB_PORT", "5432"))

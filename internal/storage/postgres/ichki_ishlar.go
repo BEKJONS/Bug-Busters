@@ -21,13 +21,17 @@ func NewIIRepo(db *sqlx.DB) storage.IIStorage {
 
 // CreateFines creates a new fine record
 func (i *IIRepo) CreateFines(fine *models.FineReq) error {
+	log.Println("Hello world", fine.TechPassportNumber)
+	log.Println("Hello world", fine.TechPassportNumber)
+	log.Println("Hello world", fine.TechPassportNumber)
+
 	query := `
 		INSERT INTO fines (tech_passport_number, license_plate, officer_id, fine_owner, fine_date, price)
 		VALUES ($1, $2, $3, $4, $5, $6)`
-	err := i.db.QueryRowx(query, fine.TechPassportNumber, fine.LicensePlate, fine.OfficerID, fine.FineOwner, time.Now(), fine.Price)
+	_, err := i.db.Exec(query, fine.TechPassportNumber, fine.LicensePlate, fine.OfficerID, fine.FineOwner, time.Now(), fine.Price)
 	if err != nil {
 		log.Println("Error creating fine:", err)
-		return err.Err()
+		return err
 	}
 	return nil
 }

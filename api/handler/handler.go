@@ -9,6 +9,7 @@ import (
 type Handlers interface {
 	Register(c *gin.Context)
 	Login(c *gin.Context)
+	AddLicense(c *gin.Context)
 
 	CreateFines(c *gin.Context)
 	AcceptFinesById(c *gin.Context)

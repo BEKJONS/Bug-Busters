@@ -94,7 +94,7 @@ func (h *Handler) GetImage(c *gin.Context) {
 // @Router /user/paid_fines/{id} [get]
 func (h *Handler) GetPaidFinesU(c *gin.Context) {
 	id := c.Param("id")
-	fines, err := h.user.GetPaidFines(models.UserId{Id: id})
+	fines, err := h.user.GetPaidFinesU(models.UserId{Id: id})
 	if err != nil {
 		h.log.Error("Failed to get paid fines", err)
 		c.JSON(http.StatusInternalServerError, models.Error{Error: err.Error()})
