@@ -9,8 +9,8 @@ import (
 type IIService interface {
 	CreateFines(fine *models.FineReq) error
 	AcceptFinesById(accept models.FineAccept) error
-	GetPaidFines(pagination models.Pagination) (*models.Fines, error)
-	GetUnpaidFines(pagination models.Pagination) (*models.Fines, error)
+	GetPaidFines(pagination models.Pagination) (models.Fines, error)
+	GetUnpaidFines(pagination models.Pagination) (models.Fines, error)
 	GetAllFines(pagination models.Pagination) (*models.Fines, error)
 }
 
@@ -48,7 +48,7 @@ func (s *iiService) AcceptFinesById(accept models.FineAccept) error {
 }
 
 // GetPaidFines retrieves all paid fines
-func (s *iiService) GetPaidFines(pagination models.Pagination) (*models.Fines, error) {
+func (s *iiService) GetPaidFines(pagination models.Pagination) (models.Fines, error) {
 	s.log.Info("GetPaidFines started")
 	fines, err := s.st.GetPaidFines(pagination)
 	if err != nil {
@@ -60,7 +60,7 @@ func (s *iiService) GetPaidFines(pagination models.Pagination) (*models.Fines, e
 }
 
 // GetUnpaidFines retrieves all unpaid fines
-func (s *iiService) GetUnpaidFines(pagination models.Pagination) (*models.Fines, error) {
+func (s *iiService) GetUnpaidFines(pagination models.Pagination) (models.Fines, error) {
 	s.log.Info("GetUnpaidFines started")
 	fines, err := s.st.GetUnpaidFines(pagination)
 	if err != nil {

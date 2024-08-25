@@ -2,22 +2,19 @@ package handler
 
 import (
 	"bug_busters/internal/service"
-	"bug_busters/pkg/models"
 	"github.com/gin-gonic/gin"
 	"log/slog"
 )
 
-type AuthHandler interface {
+type Handlers interface {
 	Register(c *gin.Context)
 	Login(c *gin.Context)
-}
 
-type IIHandler interface {
-	CreateFines(fine *models.FineReq) error
-	AcceptFinesById(accept models.FineAccept) error
-	GetPaidFines(pagination models.Pagination) (*models.Fines, error)
-	GetUnpaidFines(pagination models.Pagination) (*models.Fines, error)
-	GetAllFines(pagination models.Pagination) (*models.Fines, error)
+	CreateFines(c *gin.Context)
+	AcceptFinesById(c *gin.Context)
+	GetPaidFines(c *gin.Context)
+	GetUnpaidFines(c *gin.Context)
+	GetAllFines(c *gin.Context)
 }
 
 type Handler struct {
@@ -26,6 +23,6 @@ type Handler struct {
 	log *slog.Logger
 }
 
-func NewAuthHandler(log *slog.Logger, sr service.AuthService, II service.IIService) AuthHandler {
+func NewHandler(log *slog.Logger, sr service.AuthService, II service.IIService) Handlers {
 	return &Handler{log: log, srv: sr, ii: II}
 }

@@ -8,24 +8,35 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-
-	_ "bug_busters/api/docs"
 )
 
-// @title Authenfication service
+// @title Authentication service
 // @version 1.0
-// @description server for signIn or signUp
-// @BasePath /auth
+// @description Server for signIn or signUp
+// @BasePath /
 // @schemes http
-func NewRouter(s service.AuthService) *gin.Engine {
+func NewRouter(s service.AuthService, i service.IIService) *gin.Engine {
 	r := gin.New()
-	h := handler.NewAuthHandler(logger.NewLogger(), s)
+	h := handler.NewHandler(logger.NewLogger(), s, i)
+
+	// Swagger UI route
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	// Authentication routes
 	auth := r.Group("/auth")
 	{
 		auth.POST("/register", h.Register)
 		auth.POST("/login", h.Login)
+	}
+
+	// Fines routes
+	fines := r.Group("/fines")
+	{
+		fines.POST("", h.CreateFines)
+		fines.PUT("/:id/accept", h.AcceptFinesById) // Assuming you need to accept fines by ID
+		fines.GET("/paid", h.GetPaidFines)
+		fines.GET("/unpaid", h.GetUnpaidFines)
+		fines.GET("", h.GetAllFines) // Get all fines with optional pagination
 	}
 
 	return r
