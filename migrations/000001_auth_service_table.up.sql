@@ -33,7 +33,7 @@ CREATE TABLE users
     role           VARCHAR,
     created_at     TIMESTAMP        DEFAULT now(),
     updated_at     TIMESTAMP        DEFAULT now(),
-    deleted_at     BIGINT
+    deleted_at     BIGINT default 0
 );
 
 -- Insert mock data into users
@@ -47,7 +47,7 @@ VALUES
 -- Create the cars table
 CREATE TABLE cars
 (
-    id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id                   UUID UNIQUE DEFAULT gen_random_uuid(),
     user_id uuid references users(id),
     type                 VARCHAR(100),
     model                VARCHAR(100),
@@ -58,13 +58,13 @@ CREATE TABLE cars
     horsepower           INT,
     image_url            VARCHAR,
     license_plate        VARCHAR(100) UNIQUE,
-    tech_passport_number UUID UNIQUE
+    tech_passport_number UUID primary key
 );
 
 -- Insert mock data into cars
 INSERT INTO cars (id, user_id, type, model, color, year, body_number, engine_number, horsepower, image_url, license_plate, tech_passport_number)
 VALUES
-    (gen_random_uuid(), (SELECT id FROM users WHERE email = 'john.doe@example.com'), 'Sedan', 'Toyota Camry', 'Blue', 2021, 'XYZ123456789', 'ENG123456789', 200, 'http://example.com/image1.jpg', 'ABC123', gen_random_uuid()),
+        (gen_random_uuid(), (SELECT id FROM users WHERE email = 'john.doe@example.com'), 'Sedan', 'Toyota Camry', 'Blue', 2021, 'XYZ123456789', 'ENG123456789', 200, 'http://example.com/image1.jpg', 'ABC123', gen_random_uuid()),
     (gen_random_uuid(), (SELECT id FROM users WHERE email = 'jane.smith@example.com'), 'SUV', 'Honda CR-V', 'Red', 2022, 'ABC987654321', 'ENG987654321', 250, 'http://example.com/image2.jpg', 'XYZ987', gen_random_uuid());
 
 -- Create the services table

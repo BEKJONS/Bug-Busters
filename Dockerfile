@@ -46,4 +46,4 @@ EXPOSE 8080
 RUN chmod +x ./main
 
 # Define the command to run the application with wait-for-it.sh
-CMD ["/bin/bash", "/wait-for-it.sh", "rabbit:5672", "--", "./main"]
+CMD ["/bin/bash", "/wait-for-it.sh", "--", "./main"]

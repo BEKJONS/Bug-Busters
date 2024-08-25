@@ -3,6 +3,7 @@ package handler
 import (
 	"bug_busters/pkg/models"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 
 	_ "bug_busters/api/docs"
@@ -82,15 +83,18 @@ func (h *Handler) Login(c *gin.Context) {
 // @Failure 500 {object} models.Error
 // @Router /auth/add_license [post]
 func (h *Handler) AddLicense(c *gin.Context) {
-	var req *models.LicenceNumber
+	var req models.LicenceNumber
 
-	if err := c.ShouldBindJSON(req); err != nil {
+	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.Error("Error occurred while binding json", err)
 		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
+		log.Println(err)
 		return
 	}
 
-	res, err := h.auth.AddLicence(req)
+	log.Println(req)
+
+	res, err := h.auth.AddLicence(&req)
 	if err != nil {
 		h.log.Error("Error occurred while adding license", err)
 		c.JSON(http.StatusInternalServerError, models.Error{Error: err.Error()})
