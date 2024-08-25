@@ -8,11 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "bug_busters/api/docs"
 )
 
 // @title Authenfication service
 // @version 1.0
-// @description server for siginIn or signUp
+// @description server for signIn or signUp
 // @BasePath /auth
 // @schemes http
 func NewRouter(s service.AuthService) *gin.Engine {
