@@ -2,8 +2,10 @@ package handler
 
 import (
 	"bug_busters/pkg/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 // CreateFines godoc
@@ -42,11 +44,12 @@ func (h *Handler) CreateFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
+// @Param id path int true "Fine ID"
 // @Param FineAccept body models.FineAccept true "Accept fine"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
-// @Router /fines/:id/accept [post]
+// @Router /fines/{id}/accept [put]
 func (h *Handler) AcceptFinesById(c *gin.Context) {
 	var accept models.FineAccept
 
@@ -130,18 +133,26 @@ func (h *Handler) GetUnpaidFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
-// @Param Pagination query models.Pagination true "Pagination"
+// @Param page query int false "Page number"
+// @Param limit query int false "Number of records per page"
 // @Success 200 {object} models.Fines
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 // @Router /fines [get]
 func (h *Handler) GetAllFines(c *gin.Context) {
 	var pagination models.Pagination
-	if err := c.ShouldBindQuery(&pagination); err != nil {
-		h.log.Error("Error occurred while binding query", err)
-		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
-		return
+
+	page, err := strconv.Atoi(c.Query("page"))
+	if err != nil {
+		page = 1
 	}
+	pagination.Page = page
+	
+	limit, err := strconv.Atoi(c.Query("limit"))
+	if err != nil {
+		limit = 10
+	}
+	pagination.Limit = limit
 
 	fines, err := h.ii.GetAllFines(pagination)
 	if err != nil {

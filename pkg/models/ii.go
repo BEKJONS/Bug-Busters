@@ -23,7 +23,7 @@ type FineAccept struct {
 	Id string `json:"id" db:"id"`
 }
 type Pagination struct {
-	Limit int `json:"limit"`
-	Page  int `json:"page"`
+	Limit int 
+	Page  int 
 }
 type Fines []Fine

@@ -29,3 +29,6 @@ time=2024-08-26T00:09:37.906+05:00 level=ERROR msg="Failed to register user" err
 time=2024-08-26T00:09:37.906+05:00 level=ERROR msg="Error occurred while register" !BADKEY="pq: duplicate key value violates unique constraint \"users_email_key\""
 time=2024-08-26T00:21:57.036+05:00 level=ERROR msg="error in router" error="listen tcp :8080: bind: address already in use"
 time=2024-08-26T00:22:26.592+05:00 level=ERROR msg="error in router" error="listen tcp :8080: bind: address already in use"
+time=2024-08-26T02:03:25.539+05:00 level=INFO msg="CreateFines started"
+time=2024-08-26T02:03:25.539+05:00 level=ERROR msg="failed to create fine" error="dial tcp: lookup postgres on 127.0.0.53:53: server misbehaving"
+time=2024-08-26T02:03:25.539+05:00 level=ERROR msg="Error occurred while creating fine" !BADKEY="dial tcp: lookup postgres on 127.0.0.53:53: server misbehaving"

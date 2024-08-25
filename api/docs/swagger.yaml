@@ -287,11 +287,13 @@ paths:
       - application/json
       description: Retrieve all fines
       parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
+      - description: Page number
+        in: query
         name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: limit
         type: integer
       produces:
       - application/json
@@ -342,12 +344,17 @@ paths:
       summary: Create Fines
       tags:
       - Fines
-  /fines/:id/accept:
-    post:
+  /fines/{id}/accept:
+    put:
       consumes:
       - application/json
       description: Accept a fine by updating its payment date
       parameters:
+      - description: Fine ID
+        in: path
+        name: id
+        required: true
+        type: integer
       - description: Accept fine
         in: body
         name: FineAccept
