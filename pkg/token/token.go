@@ -7,18 +7,20 @@ import (
 )
 
 type Claims struct {
-	ID   string `json:"id"`
-	Role string `json:"role"`
+	ID    string `json:"id"`
+	Role  string `json:"role"`
+	Email string `json:"email"`
 	jwt.StandardClaims
 }
 
-func GenerateAccessToken(id, role string) (string, error) {
+func GenerateAccessToken(id, role, email string) (string, error) {
 	claims := Claims{
-		ID:   id,
-		Role: role,
+		ID:    id,
+		Role:  role,
+		Email: email,
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().Add(time.Minute * 10).Unix(),
+			ExpiresAt: time.Now().Add(time.Hour * 50).Unix(),
 		},
 	}
 
@@ -31,13 +33,14 @@ func GenerateAccessToken(id, role string) (string, error) {
 	return str, nil
 }
 
-func GenerateRefreshToken(id, role string) (string, error) {
+func GenerateRefreshToken(id, role, email string) (string, error) {
 	claims := Claims{
-		ID:   id,
-		Role: role,
+		ID:    id,
+		Role:  role,
+		Email: email,
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().Add(time.Hour * 10).Unix(),
+			ExpiresAt: time.Now().Add(time.Hour * 99).Unix(),
 		},
 	}
 

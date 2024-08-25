@@ -23,6 +23,7 @@ type LoginUsernameRequest struct {
 }
 
 type Tokens struct {
-	AccessToken  string `json:"access_token" db:"access_token"`
-	RefreshToken string `json:"refresh_token" db:"refresh_token"`
+	AccessToken  string        `json:"access_token" db:"access_token"`
+	RefreshToken string        `json:"refresh_token" db:"refresh_token"`
+	Data         LoginResponse `json:"data" db:"data"`
 }
