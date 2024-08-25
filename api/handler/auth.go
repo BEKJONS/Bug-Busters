@@ -13,7 +13,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param Register body models.RegisterRequest true "register user"
-// @Success 200 {object} models.RegisterResponse
+// @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
@@ -23,18 +23,18 @@ func (h *authHandler) Register(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&auth); err != nil {
 		h.log.Error("Error occurred while binding json", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, models.Error{Error: err})
 		return
 	}
 
 	err := h.srv.Register(*auth)
 	if err != nil {
 		h.log.Error("Error occurred while register", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, models.Error{Error: err})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"Message": "Successfully registered"})
+	c.JSON(http.StatusOK, models.Message{Message: "Successfully registered"})
 }
 
 // Login godoc
@@ -44,7 +44,7 @@ func (h *authHandler) Register(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param LoginEmail body models.LoginEmailRequest true "register user"
-// @Success 200 {object} models.LoginEmailResponse
+// @Success 200 {object} models.Tokens
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
@@ -54,14 +54,14 @@ func (h *authHandler) Login(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&auth); err != nil {
 		h.log.Error("Error occurred while binding json", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, models.Error{Error: err})
 		return
 	}
 
 	res, err := h.srv.Login(auth)
 	if err != nil {
 		h.log.Error("Error occurred while login", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, models.Error{Error: err})
 		return
 	}
 

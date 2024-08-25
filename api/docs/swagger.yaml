@@ -1,0 +1,122 @@
+basePath: /auth
+definitions:
+  models.Error:
+    properties:
+      error: {}
+    type: object
+  models.LoginEmailRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.LoginResponse:
+    properties:
+      id:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+    type: object
+  models.Message:
+    properties:
+      message:
+        type: string
+    type: object
+  models.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+    type: object
+  models.Tokens:
+    properties:
+      access_token:
+        type: string
+      data:
+        $ref: '#/definitions/models.LoginResponse'
+      refresh_token:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: server for siginIn or signUp
+  title: Authenfication service
+  version: "1.0"
+paths:
+  /login/email:
+    post:
+      consumes:
+      - application/json
+      description: sign in user
+      parameters:
+      - description: register user
+        in: body
+        name: LoginEmail
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Tokens'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: LoginEmail Users
+      tags:
+      - Auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: create users
+      parameters:
+      - description: register user
+        in: body
+        name: Register
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Register Users
+      tags:
+      - Auth
+schemes:
+- http
+swagger: "2.0"

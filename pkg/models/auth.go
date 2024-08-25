@@ -31,3 +31,7 @@ type LicenceNumber struct {
 type Message struct {
 	Message string `json:"message" db:"message"`
 }
+
+type Error struct {
+	Error error `json:"error" db:"error"`
+}
