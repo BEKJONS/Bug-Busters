@@ -123,6 +123,9 @@ github.com/goccy/go-json/internal/runtime
 # github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db
 ## explicit
 github.com/golang/snappy
+# github.com/google/uuid v1.6.0
+## explicit
+github.com/google/uuid
 # github.com/jmoiron/sqlx v1.4.0
 ## explicit; go 1.10
 github.com/jmoiron/sqlx

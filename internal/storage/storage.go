@@ -15,3 +15,12 @@ type IIStorage interface {
 	GetUnpaidFines(pagination models.Pagination) (*models.Fines, error)
 	GetAllFines(pagination models.Pagination) (*models.Fines, error)
 }
+
+type UserStorage interface {
+	GetProfile(id models.UserId) (models.UserProfile, error)
+	AddImage(in *models.UpdateCarImage) error
+	GetImage(useId string) (string, error)
+	GetPaidFines(userId string) (*[]*models.UserFines, error)
+	GetUnpaid(userId string) (*[]*models.UserFines, error)
+	DeleteUser(userId string) error
+}

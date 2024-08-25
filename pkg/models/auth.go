@@ -27,3 +27,9 @@ type LicenceNumber struct {
 	UserId        string `json:"userId" db:"user_id"`
 	LicenceNumber string `json:"number" db:"number"`
 }
+
+type UserFines struct {
+	OfficerId    string `json:"officer_id" db:"officer_id"`
+	CarOwnerName string `json:"car_owner_name" db:"first_name"`
+	LicencePlate string `json:"licence_plate" db:"license_plate"`
+}
