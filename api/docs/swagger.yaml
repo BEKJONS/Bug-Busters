@@ -49,11 +49,6 @@ definitions:
       tech_passport_number:
         type: string
     type: object
-  models.FineAccept:
-    properties:
-      id:
-        type: string
-    type: object
   models.FineReq:
     properties:
       fine_date:
@@ -342,18 +337,17 @@ paths:
       summary: Create Fines
       tags:
       - Fines
-  /fines/:id/accept:
-    post:
+  /fines/{id}/accept:
+    put:
       consumes:
       - application/json
       description: Accept a fine by updating its payment date
       parameters:
-      - description: Accept fine
-        in: body
-        name: FineAccept
+      - description: ID
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/models.FineAccept'
+        type: string
       produces:
       - application/json
       responses:

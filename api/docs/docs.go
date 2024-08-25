@@ -259,52 +259,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/fines/:id/accept": {
-            "post": {
-                "description": "Accept a fine by updating its payment date",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Fines"
-                ],
-                "summary": "Accept Fines By ID",
-                "parameters": [
-                    {
-                        "description": "Accept fine",
-                        "name": "FineAccept",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.FineAccept"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Message"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.Error"
-                        }
-                    }
-                }
-            }
-        },
         "/fines/paid": {
             "get": {
                 "description": "Retrieve all paid fines",
@@ -388,6 +342,50 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/models.Fine"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/fines/{id}/accept": {
+            "put": {
+                "description": "Accept a fine by updating its payment date",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fines"
+                ],
+                "summary": "Accept Fines By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
                         }
                     },
                     "400": {
@@ -965,14 +963,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "tech_passport_number": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.FineAccept": {
-            "type": "object",
-            "properties": {
-                "id": {
                     "type": "string"
                 }
             }
