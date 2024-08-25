@@ -193,7 +193,7 @@ func TestGetPaidFinesU(t *testing.T) {
 	}
 
 	// Test GetPaidFines
-	fines, err := userRepo.GetPaidFines(userID)
+	fines, err := userRepo.GetPaidFinesU(userID)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -273,7 +273,7 @@ func TestGetUnpaited(t *testing.T) {
 	}
 
 	// Test GetUnpaited
-	fines, err := userRepo.GetUnpaited(userID)
+	fines, err := userRepo.GetUnpaid(userID)
 	if err != nil {
 		t.Fatal(err)
 	}
