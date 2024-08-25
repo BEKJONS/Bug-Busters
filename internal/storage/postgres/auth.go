@@ -38,3 +38,12 @@ func (a *AuthRepo) Login(in *models.LoginEmailRequest) (*models.LoginResponse, e
 
 	return res, nil
 }
+
+func (a *AuthRepo) AddLicence(in *models.LicenceNumber) error {
+	_, err := a.db.Exec("UPDATE users set driver_license = $1 where id = $2 and deleted_at = 0")
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -1,7 +1,7 @@
 -- Сначала создаем таблицу driver_licenses
 CREATE TABLE driver_licenses
 (
-    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id              UUID default gen_random_uuid(),
     first_name      VARCHAR(100),
     last_name       VARCHAR(100),
     father_name     VARCHAR(100),
@@ -11,7 +11,7 @@ CREATE TABLE driver_licenses
     expiration_date DATE,
     category        VARCHAR(50),
     issued_by       VARCHAR(100),
-    license_number  VARCHAR
+    license_number  VARCHAR PRIMARY KEY -- Тип VARCHAR, как вы хотите
 );
 
 -- Затем создаем таблицу cars
@@ -25,15 +25,15 @@ CREATE TABLE cars
     body_number          VARCHAR(100) UNIQUE,
     engine_number        VARCHAR(100) UNIQUE,
     horsepower           INT,
-    license_plate        VARCHAR(100) UNIQUE, -- Уникальное ограничение для license_plate
-    tech_passport_number UUID UNIQUE          -- Уникальное ограничение для tech_passport_number
+    license_plate        VARCHAR(100) UNIQUE,
+    tech_passport_number UUID UNIQUE
 );
 
 -- Создаем остальные таблицы
 CREATE TABLE users
 (
     id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    driver_license_id UUID REFERENCES driver_licenses (id), -- Ссылка на driver_licenses
+    driver_license VARCHAR REFERENCES driver_licenses (license_number), -- Изменен тип на VARCHAR
     email             VARCHAR UNIQUE,
     password          VARCHAR,
     role              VARCHAR,
@@ -56,21 +56,21 @@ CREATE TABLE Services
 CREATE TABLE Fines
 (
     id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    tech_passport_number UUID REFERENCES cars (tech_passport_number),  -- Ссылка на cars
-    license_plate        VARCHAR(100) REFERENCES cars (license_plate), -- Ссылка на cars
-    officer_id           UUID REFERENCES users (id),                   -- Ссылка на users
-    fine_owner           UUID REFERENCES users (id),                   -- Ссылка на users
+    tech_passport_number UUID REFERENCES cars (tech_passport_number),
+    license_plate        VARCHAR(100) REFERENCES cars (license_plate),
+    officer_id           UUID REFERENCES users (id),
+    fine_owner           UUID REFERENCES users (id),
     fine_date            TIMESTAMP,
     payment_date         TIMESTAMP,
-    user_id              UUID REFERENCES users (id)                    -- Ссылка на users
+    user_id              UUID REFERENCES users (id)
 );
 
 CREATE TABLE Services_Provided
 (
-    id              UUId PRIMARY KEY DEFAULT gen_random_uuid(),
-    license_plate   VARCHAR(100) REFERENCES cars (license_plate), -- Ссылка на cars
+    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    license_plate   VARCHAR(100) REFERENCES cars (license_plate),
     service_type    VARCHAR(100),
     service_date    DATE,
     expiration_date DATE,
-    user_id         UUID REFERENCES users (id)                    -- Ссылка на users
+    user_id         UUID REFERENCES users (id)
 );

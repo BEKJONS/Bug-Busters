@@ -17,12 +17,16 @@ type LoginResponse struct {
 	Role     string `json:"role" db:"role"`
 }
 
-type LoginUsernameRequest struct {
-	Username string `json:"username" db:"username"`
-	Password string `json:"password" db:"password"`
-}
-
 type Tokens struct {
 	AccessToken  string `json:"access_token" db:"access_token"`
 	RefreshToken string `json:"refresh_token" db:"refresh_token"`
+}
+
+type LicenceNumber struct {
+	UserId        string `json:"userId" db:"user_id"`
+	LicenceNumber string `json:"number" db:"number"`
+}
+
+type Message struct {
+	Message string `json:"message" db:"message"`
 }
