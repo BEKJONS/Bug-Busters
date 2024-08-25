@@ -17,6 +17,8 @@ import (
 // @version 1.0
 // @securityDefinitions.apikey ApiKeyAuth
 // @description Server for signIn or signUp
+// @in header
+// @name Authorization
 // @schemes http
 // @BasePath /
 func NewRouter(s service.AuthService, i service.IIService, u service.UserService, serv service.IService, enf *casbin.Enforcer) *gin.Engine {

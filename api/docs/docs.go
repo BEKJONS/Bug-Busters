@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/auth/add_license": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Add a new license to the system",
                 "consumes": [
                     "application/json"
@@ -63,6 +68,11 @@ const docTemplate = `{
         },
         "/auth/login": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "sign in user",
                 "consumes": [
                     "application/json"
@@ -115,6 +125,11 @@ const docTemplate = `{
         },
         "/auth/register": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "create users",
                 "consumes": [
                     "application/json"
@@ -167,6 +182,11 @@ const docTemplate = `{
         },
         "/fines": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all fines",
                 "consumes": [
                     "application/json"
@@ -182,12 +202,10 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "name": "limit",
-                        "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "name": "page",
                         "name": "page",
                         "in": "query"
                     }
@@ -217,6 +235,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create a new fine",
                 "consumes": [
                     "application/json"
@@ -262,7 +285,12 @@ const docTemplate = `{
             }
         },
         "/fines/:id/accept": {
-            "post": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Accept a fine by updating its payment date",
                 "consumes": [
                     "application/json"
@@ -274,16 +302,8 @@ const docTemplate = `{
                     "Fines"
                 ],
                 "summary": "Accept Fines By ID",
-                "summary": "Accept Fines By ID",
                 "parameters": [
                     {
-                        "description": "Accept fine",
-                        "name": "FineAccept",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.FineAccept"
-                        }
                         "description": "Accept fine",
                         "name": "FineAccept",
                         "in": "body",
@@ -297,7 +317,6 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Message"
                             "$ref": "#/definitions/models.Message"
                         }
                     },
@@ -317,9 +336,12 @@ const docTemplate = `{
             }
         },
         "/fines/paid": {
-        "/fines/paid": {
             "get": {
-                "description": "Retrieve all paid fines",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all paid fines",
                 "consumes": [
                     "application/json"
@@ -331,29 +353,18 @@ const docTemplate = `{
                     "Fines"
                 ],
                 "summary": "Get Paid Fines",
-                "summary": "Get Paid Fines",
                 "parameters": [
                     {
                         "type": "integer",
                         "description": "Pagination",
                         "name": "page",
-                        "in": "query",
-                        "required": true
-                        "description": "Pagination",
-                        "name": "page",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Limit",
                         "name": "limit",
-                        "in": "query",
-                        "required": true
-                        "description": "Limit",
-                        "name": "limit",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -383,9 +394,11 @@ const docTemplate = `{
         },
         "/fines/send_acceptation": {
             "post": {
-                "description": "Retrieve the ID of the accepted fine",
-        "/fines/send_acceptation": {
-            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve the ID of the accepted fine",
                 "consumes": [
                     "application/json"
@@ -421,42 +434,11 @@ const docTemplate = `{
         },
         "/fines/unpaid": {
             "get": {
-                "description": "Retrieve all unpaid fines",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Fines"
-                ],
-                "summary": "Get Unpaid Fines",
-                "summary": "Accept a fine by ID",
-                "responses": {
-                    "200": {
-                        "description": "Accepted fine ID",
-                        "schema": {
-                            "$ref": "#/definitions/models.Message"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/models.Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "$ref": "#/definitions/models.Error"
-                        }
+                "security": [
+                    {
+                        "ApiKeyAuth": []
                     }
-                }
-            }
-        },
-        "/fines/unpaid": {
-            "get": {
+                ],
                 "description": "Retrieve all unpaid fines",
                 "consumes": [
                     "application/json"
@@ -473,33 +455,19 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Pagination",
                         "name": "page",
-                        "in": "query",
-                        "description": "Pagination",
-                        "name": "page",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Limit",
                         "name": "limit",
-                        "in": "query",
-                        "required": true
-                        "type": "integer",
-                        "description": "Limit",
-                        "name": "limit",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Fine"
-                            }
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/models.Fine"
@@ -523,6 +491,11 @@ const docTemplate = `{
         },
         "/service": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get all services",
                 "consumes": [
                     "application/json"
@@ -552,6 +525,11 @@ const docTemplate = `{
         },
         "/service/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create service",
                 "consumes": [
                     "application/json"
@@ -592,6 +570,11 @@ const docTemplate = `{
         },
         "/service/delete/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete service",
                 "consumes": [
                     "application/json"
@@ -630,6 +613,11 @@ const docTemplate = `{
         },
         "/service/update": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Update service",
                 "consumes": [
                     "application/json"
@@ -670,6 +658,11 @@ const docTemplate = `{
         },
         "/service/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get service",
                 "consumes": [
                     "application/json"
@@ -708,6 +701,11 @@ const docTemplate = `{
         },
         "/user/image": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Upload a new car image",
                 "consumes": [
                     "application/json"
@@ -754,6 +752,11 @@ const docTemplate = `{
         },
         "/user/image/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve the image of a user's car",
                 "consumes": [
                     "application/json"
@@ -804,6 +807,11 @@ const docTemplate = `{
         },
         "/user/paid_fines/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all paid fines for a user",
                 "consumes": [
                     "application/json"
@@ -857,6 +865,11 @@ const docTemplate = `{
         },
         "/user/profile/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve the profile of a user",
                 "consumes": [
                     "application/json"
@@ -907,6 +920,11 @@ const docTemplate = `{
         },
         "/user/unpaid_fines/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all unpaid fines for a user",
                 "consumes": [
                     "application/json"
@@ -960,6 +978,11 @@ const docTemplate = `{
         },
         "/user/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete a user by ID",
                 "consumes": [
                     "application/json"
@@ -1284,6 +1307,14 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "description": "Server for signIn or signUp",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
@@ -1291,10 +1322,10 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "/",
-	Schemes:          []string{"http"},
+	BasePath:         "",
+	Schemes:          []string{},
 	Title:            "Authentication service",
-	Description:      "Server for signIn or signUp",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

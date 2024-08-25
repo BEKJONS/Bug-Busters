@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   models.DriverLicence:
     properties:
@@ -179,7 +178,6 @@ definitions:
     type: object
 info:
   contact: {}
-  description: Server for signIn or signUp
   title: Authentication service
   version: "1.0"
 paths:
@@ -210,6 +208,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Add a new license
       tags:
       - Auth
@@ -244,6 +244,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: LoginEmail Users
       tags:
       - Auth
@@ -278,6 +280,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Register Users
       tags:
       - Auth
@@ -288,11 +292,7 @@ paths:
       description: Retrieve all fines
       parameters:
       - in: query
-      - in: query
         name: limit
-        type: integer
-      - in: query
-        name: page
         type: integer
       - in: query
         name: page
@@ -314,6 +314,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Get All Fines
       tags:
       - Fines
@@ -343,11 +345,13 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Create Fines
       tags:
       - Fines
   /fines/:id/accept:
-    post:
+    put:
       consumes:
       - application/json
       description: Accept a fine by updating its payment date
@@ -373,6 +377,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Accept Fines By ID
       tags:
       - Fines
@@ -385,20 +391,10 @@ paths:
       - description: Pagination
         in: query
         name: page
-        required: true
-      - description: Pagination
-        in: query
-        name: page
-        required: true
         type: integer
       - description: Limit
         in: query
         name: limit
-        required: true
-      - description: Limit
-        in: query
-        name: limit
-        required: true
         type: integer
       produces:
       - application/json
@@ -417,6 +413,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Get Paid Fines
       tags:
       - Fines
@@ -440,29 +438,8 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/models.Error'
-      summary: Accept a fine by ID
-      tags:
-      - Fines
-  /fines/send_acceptation:
-    post:
-      consumes:
-      - application/json
-      description: Retrieve the ID of the accepted fine
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Accepted fine ID
-          schema:
-            $ref: '#/definitions/models.Message'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Accept a fine by ID
       tags:
       - Fines
@@ -475,20 +452,10 @@ paths:
       - description: Pagination
         in: query
         name: page
-        required: true
-      - description: Pagination
-        in: query
-        name: page
-        required: true
         type: integer
       - description: Limit
         in: query
         name: limit
-        required: true
-      - description: Limit
-        in: query
-        name: limit
-        required: true
         type: integer
       produces:
       - application/json
@@ -507,6 +474,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Get Unpaid Fines
       tags:
       - Fines
@@ -526,6 +495,8 @@ paths:
           description: Bad Request
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Get all services
       tags:
       - service
@@ -551,6 +522,8 @@ paths:
           description: Bad Request
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Get service
       tags:
       - service
@@ -577,6 +550,8 @@ paths:
           description: Bad Request
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Create service
       tags:
       - service
@@ -602,6 +577,8 @@ paths:
           description: Bad Request
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Delete service
       tags:
       - service
@@ -628,6 +605,8 @@ paths:
           description: Bad Request
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Update service
       tags:
       - service
@@ -661,6 +640,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Delete User
       tags:
       - User
@@ -691,6 +672,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Add Car Image
       tags:
       - User
@@ -724,6 +707,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Get Car Image
       tags:
       - User
@@ -759,6 +744,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Get Paid Fines
       tags:
       - User
@@ -792,6 +779,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Get User Profile
       tags:
       - User
@@ -827,9 +816,15 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Get Unpaid Fines
       tags:
       - User
-schemes:
-- http
+securityDefinitions:
+  ApiKeyAuth:
+    description: Server for signIn or signUp
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
