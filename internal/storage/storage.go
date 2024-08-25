@@ -15,3 +15,11 @@ type IIStorage interface {
 	GetUnpaidFines(pagination models.Pagination) (models.Fines, error)
 	GetAllFines(pagination models.Pagination) (*models.Fines, error)
 }
+
+type ServiceStorage interface {
+	CreateService(service *models.Service) (*models.Service, error)
+	GetService(id string) (*models.Service, error)
+	UpdateService(service *models.Service) (*models.Service, error)
+	DeleteService(id string) (string, error)
+	GetServices() (*models.Services, error)
+}

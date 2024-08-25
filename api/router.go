@@ -5,6 +5,7 @@ import (
 	"bug_busters/api/handler"
 	"bug_busters/internal/service"
 	"bug_busters/pkg/logger"
+
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -37,6 +38,15 @@ func NewRouter(s service.AuthService, i service.IIService) *gin.Engine {
 		fines.GET("/paid", h.GetPaidFines)
 		fines.GET("/unpaid", h.GetUnpaidFines)
 		fines.GET("", h.GetAllFines) // Get all fines with optional pagination
+	}
+	// Service routes
+	service := r.Group("/service")
+	{
+		service.GET("", h.GetAllServices)
+		service.GET("/:id", h.GetService)
+		service.POST("/create", h.CreateService)
+		service.PUT("/update/:id", h.UpdateService)
+		service.DELETE("/delete/:id", h.DeleteService)
 	}
 
 	return r

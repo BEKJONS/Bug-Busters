@@ -15,14 +15,22 @@ type Handlers interface {
 	GetPaidFines(c *gin.Context)
 	GetUnpaidFines(c *gin.Context)
 	GetAllFines(c *gin.Context)
+
+	CreateService(c *gin.Context)
+	UpdateService(c *gin.Context)
+	GetService(c *gin.Context)
+	GetAllServices(c *gin.Context)
+	DeleteService(c *gin.Context)
+
 }
 
 type Handler struct {
 	srv service.AuthService
 	ii  service.IIService
+	serv service.IService
 	log *slog.Logger
 }
 
-func NewHandler(log *slog.Logger, sr service.AuthService, II service.IIService) Handlers {
-	return &Handler{log: log, srv: sr, ii: II}
+func NewHandler(log *slog.Logger, sr service.AuthService, II service.IIService, serv service.IService) Handlers {
+	return &Handler{log: log, srv: sr, ii: II, serv: serv}
 }
