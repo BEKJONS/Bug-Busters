@@ -1,75 +1,112 @@
 package middleware
 
 import (
-	"github.com/casbin/casbin/v2"
-	_ "github.com/casbin/casbin/v2"
-
 	"bug_busters/pkg/token"
+	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/casbin/casbin/v2"
+	"github.com/gin-gonic/gin"
 )
 
-func AuthenticationMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		stringToken, err := c.Cookie("access_token")
-		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-			c.Abort()
-			return
-		}
-
-		claims, err := token.ExtractAccessClaims(stringToken)
-		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-			c.Abort()
-			return
-		}
-
-		c.Set("claims", claims)
-		c.Next()
-	}
+type casbinPermission struct {
+	enforcer *casbin.Enforcer
 }
 
-func Authorization(enforcer *casbin.Enforcer) gin.HandlerFunc {
+func (c *casbinPermission) GetRole(ctx *gin.Context) (string, int) {
+	Token := ctx.GetHeader("Authorization")
+	if Token == "" {
+		fmt.Println(1111111)
+		return "1.unauthorized", http.StatusUnauthorized
+	}
+
+	claims, err := token.ExtractClaims(Token)
+	if err != nil || claims == nil {
+		fmt.Println(err)
+		return "2.unauthorized", http.StatusUnauthorized
+	}
+
+	role, ok := claims["user_role"].(string)
+	if !ok {
+		fmt.Println(err)
+		return "3.unauthorized", http.StatusUnauthorized
+	}
+	return role, 0
+}
+
+func (c *casbinPermission) CheckPermission(ctx *gin.Context) (bool, error) {
+	subject, status := c.GetRole(ctx)
+	if status != 0 {
+		return false, errors.New("error while getting a role: " + subject)
+	}
+	action := ctx.Request.Method
+	object := ctx.Request.URL.Path
+	fmt.Println("subject: ", subject, "action: ", action, "object: ", object)
+
+	allow, err := c.enforcer.Enforce(subject, object, action)
+	if err != nil {
+		return false, err
+	}
+	return allow, nil
+}
+
+func PermissionMiddleware(enf *casbin.Enforcer) gin.HandlerFunc {
+	casbHandler := &casbinPermission{
+		enforcer: enf,
+	}
+
 	return func(ctx *gin.Context) {
-		claims, exists := ctx.Get("claims")
-		if !exists {
-			ctx.JSON(http.StatusUnauthorized, gin.H{
-				"Error": "Unauthorized",
-			})
-			ctx.Abort()
-			return
-		}
+		res, err := casbHandler.CheckPermission(ctx)
 
-		userClaims, ok := claims.(*token.Claims)
-		if !ok {
-			ctx.JSON(http.StatusUnauthorized, gin.H{
-				"Error": "Unauthorized",
-			})
-			ctx.Abort()
-		}
-
-		fmt.Println(userClaims.Role, ctx.FullPath(), ctx.Request.Method)
-		ok, err := enforcer.Enforce(userClaims.Role, ctx.FullPath(), ctx.Request.Method)
 		if err != nil {
-			fmt.Println(err)
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"Error": "Internal server error",
-				"Err":   err.Error(),
-			})
-			ctx.Abort()
+			ctx.AbortWithError(500, err)
+			return
+		}
+		if !res {
+			ctx.AbortWithStatusJSON(401, gin.H{"error": "You don't have permission"})
+			return
+		}
+		auth := ctx.GetHeader("Authorization")
+		if auth == "" {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest,
+				gin.H{"error": "authorization header is required"})
 			return
 		}
 
-		if !ok {
-			ctx.JSON(http.StatusForbidden, gin.H{
-				"Error": "Forbidden",
-			})
-			ctx.Abort()
+		valid, err := token.ValidateToken(auth)
+		if err != nil || !valid {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest,
+				gin.H{"error": fmt.Sprintf("invalid token: %s", err)})
 			return
 		}
 
+		claims, err := token.ExtractClaims(auth)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest,
+				gin.H{"error": fmt.Sprintf("invalid token claims: %s", err)})
+			return
+		}
+
+		ctx.Set("claims", claims)
 		ctx.Next()
 	}
 }
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+	  c.Writer.Header().Set("Content-Type", "application/json")
+	  c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	  c.Writer.Header().Set("Access-Control-Max-Age", "86400")
+	  c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
+	  c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
+	  c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+  
+	  if c.Request.Method == "OPTIONS" {
+		c.AbortWithStatus(200)
+	  } else {
+		c.Next()
+	  }
+	}
+  }
+  

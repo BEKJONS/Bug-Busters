@@ -287,13 +287,11 @@ paths:
       - application/json
       description: Retrieve all fines
       parameters:
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Number of records per page
-        in: query
+      - in: query
         name: limit
+        type: integer
+      - in: query
+        name: page
         type: integer
       produces:
       - application/json
@@ -344,17 +342,12 @@ paths:
       summary: Create Fines
       tags:
       - Fines
-  /fines/{id}/accept:
-    put:
+  /fines/:id/accept:
+    post:
       consumes:
       - application/json
       description: Accept a fine by updating its payment date
       parameters:
-      - description: Fine ID
-        in: path
-        name: id
-        required: true
-        type: integer
       - description: Accept fine
         in: body
         name: FineAccept
@@ -385,11 +378,15 @@ paths:
       - application/json
       description: Retrieve all paid fines
       parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
+      - description: Pagination
+        in: query
         name: page
+        required: true
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        required: true
         type: integer
       produces:
       - application/json
@@ -411,17 +408,44 @@ paths:
       summary: Get Paid Fines
       tags:
       - Fines
+  /fines/send_acceptation:
+    post:
+      consumes:
+      - application/json
+      description: Retrieve the ID of the accepted fine
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted fine ID
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Accept a fine by ID
+      tags:
+      - Fines
   /fines/unpaid:
     get:
       consumes:
       - application/json
       description: Retrieve all unpaid fines
       parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
+      - description: Pagination
+        in: query
         name: page
+        required: true
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        required: true
         type: integer
       produces:
       - application/json

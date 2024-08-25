@@ -13,6 +13,7 @@ import (
 // @Tags service
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Success 200 {object} models.Services
 // @Failure 400 {object} string
 // @Router /service [get]
@@ -31,6 +32,7 @@ func (h *Handler) GetAllServices(c *gin.Context) {
 // @Tags service
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param id path string true "id"
 // @Success 200 {object} models.Service
 // @Failure 400 {object} string
@@ -51,6 +53,7 @@ func (h *Handler) GetService(c *gin.Context) {
 // @Tags service
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param service body models.Service true "service"
 // @Success 200 {object} models.Service
 // @Failure 400 {object} string
@@ -76,6 +79,7 @@ func (h *Handler) CreateService(c *gin.Context) {
 // @Tags service
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param service body models.Service true "service"
 // @Success 200 {object} models.Service
 // @Failure 400 {object} string
@@ -101,6 +105,7 @@ func (h *Handler) UpdateService(c *gin.Context) {
 // @Tags service
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param id path string true "id"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} string

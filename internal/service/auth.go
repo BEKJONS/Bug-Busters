@@ -55,13 +55,13 @@ func (a *authService) Login(in *models.LoginEmailRequest) (*models.Tokens, error
 		return nil, errors.New("invalid password")
 	}
 
-	refreshToken, err := token.GenerateRefreshToken(res.Id, res.Role, res.Password)
+	refreshToken, err := token.GenerateJWT(res.Id, res.Role, res.Password)
 	if err != nil {
 		a.log.Error("Failed to generate refresh token", "error", err)
 		return nil, err
 	}
 
-	accessToken, err := token.GenerateAccessToken(res.Id, res.Role, res.Password)
+	accessToken, err := token.GenerateJWT(res.Id, res.Role, res.Password)
 	if err != nil {
 		a.log.Error("Failed to generate access token", "error", err)
 		return nil, err
@@ -84,5 +84,5 @@ func (a *authService) AddLicence(in *models.LicenceNumber) (*models.Message, err
 		return nil, err
 	}
 
-	return &models.Message{"Licence added"}, nil
+	return &models.Message{Message: "Licence added"}, nil
 }

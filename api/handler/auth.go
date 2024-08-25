@@ -2,9 +2,10 @@ package handler
 
 import (
 	"bug_busters/pkg/models"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 
 	_ "bug_busters/api/docs"
 )
@@ -15,6 +16,7 @@ import (
 // @Tags Auth
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param Register body models.RegisterRequest true "register user"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error
@@ -46,6 +48,7 @@ func (h *Handler) Register(c *gin.Context) {
 // @Tags Auth
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param LoginEmail body models.LoginEmailRequest true "register user"
 // @Success 200 {object} models.Tokens
 // @Failure 400 {object} models.Error
@@ -77,6 +80,7 @@ func (h *Handler) Login(c *gin.Context) {
 // @Tags Auth
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param License body models.LicenceNumber true "License information"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error

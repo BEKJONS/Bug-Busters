@@ -7,11 +7,22 @@ import (
 	"bug_busters/pkg/config"
 	logger2 "bug_busters/pkg/logger"
 	"log"
+	"os"
+
+	"github.com/casbin/casbin/v2"
 )
 
 func main() {
 	cfg := config.Load()
 	logger := logger2.NewLogger()
+	path, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	casbinEnforcer, err := casbin.NewEnforcer(path+"/pkg/casbin/model.conf", path+"/pkg/casbin/policy.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	db, err := postgres.ConnectPostgres(cfg)
 	if err != nil {
@@ -23,7 +34,7 @@ func main() {
 	ii := service.NewIIService(postgres.NewIIRepo(db), logger)
 	user := service.NewUserService(logger, postgres.NewUserRepo(db))
 	servs := service.NewService(postgres.NewServiceRepo(db))
-	router := api.NewRouter(auth, ii, user, servs)
+	router := api.NewRouter(auth, ii, user, servs, casbinEnforcer)
 	err = router.Run(cfg.GIN_PORT)
 
 	if err != nil {
