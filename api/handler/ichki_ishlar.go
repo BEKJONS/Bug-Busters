@@ -44,12 +44,11 @@ func (h *Handler) CreateFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
-// @Param id path int true "Fine ID"
 // @Param FineAccept body models.FineAccept true "Accept fine"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
-// @Router /fines/{id}/accept [put]
+// @Router /fines/:id/accept [post]
 func (h *Handler) AcceptFinesById(c *gin.Context) {
 	var accept models.FineAccept
 
@@ -131,7 +130,6 @@ func (h *Handler) GetUnpaidFines(c *gin.Context) {
 	}
 	pagination.Limit = limit
 
-
 	fines, err := h.ii.GetUnpaidFines(pagination)
 	if err != nil {
 		h.log.Error("Error occurred while retrieving unpaid fines", err)
@@ -148,8 +146,7 @@ func (h *Handler) GetUnpaidFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
-// @Param page query int false "Page number"
-// @Param limit query int false "Number of records per page"
+// @Param Pagination query models.Pagination true "Pagination"
 // @Success 200 {object} models.Fines
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
@@ -177,4 +174,19 @@ func (h *Handler) GetAllFines(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, fines)
+}
+
+// SendAcceptation godoc
+// @Summary Accept a fine by ID
+// @Description Retrieve the ID of the accepted fine
+// @Tags Fines
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.Message "Accepted fine ID"
+// @Failure 400 {object} models.Error "Bad request"
+// @Failure 500 {object} models.Error "Internal server error"
+// @Router /fines/send_acceptation [post]
+func (h *Handler) SendAcceptation(c *gin.Context) {
+	id := c.MustGet("id").(string)
+	c.JSON(http.StatusOK, models.Message{Message: id})
 }

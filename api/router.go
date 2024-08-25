@@ -39,6 +39,7 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 		fines.GET("/paid", h.GetPaidFines)
 		fines.GET("/unpaid", h.GetUnpaidFines)
 		fines.GET("", h.GetAllFines) // Get all fines with optional pagination
+		fines.POST("/send_acceptation", h.SendAcceptation)
 	}
 	// Service routes
 	service := r.Group("/service")
