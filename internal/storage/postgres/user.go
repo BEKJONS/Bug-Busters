@@ -47,7 +47,7 @@ func (u *userRepo) GetImage(useId string) (string, error) {
 	return url, nil
 }
 
-func (u *userRepo) GetPaidFines(userId string) (*[]*models.UserFines, error) {
+func (u *userRepo) GetPaidFinesU(userId string) (*[]*models.UserFines, error) {
 	res := []*models.UserFines{}
 
 	err := u.db.Select(&res, "SELECT officer_id, license_plate FROM fines WHERE fine_owner = $1 AND payment_date IS NOT NULL", userId)

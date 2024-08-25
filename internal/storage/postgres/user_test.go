@@ -148,7 +148,7 @@ func TestGetImage(t *testing.T) {
 	}
 }
 
-func TestGetPaidFines(t *testing.T) {
+func TestGetPaidFinesU(t *testing.T) {
 	db, err := Connectfortest()
 	if err != nil {
 		t.Fatal(err)

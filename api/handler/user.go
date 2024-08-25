@@ -80,7 +80,7 @@ func (h *Handler) GetImage(c *gin.Context) {
 	c.JSON(http.StatusOK, image)
 }
 
-// GetPaidFineses godoc
+// GetPaidFinesU godoc
 // @Summary Get Paid Fines
 // @Description Retrieve all paid fines for a user
 // @Tags User
@@ -92,7 +92,7 @@ func (h *Handler) GetImage(c *gin.Context) {
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
 // @Router /user/paid_fines/{id} [get]
-func (h *Handler) GetPaidFineses(c *gin.Context) {
+func (h *Handler) GetPaidFinesU(c *gin.Context) {
 	id := c.Param("id")
 	fines, err := h.user.GetPaidFines(models.UserId{Id: id})
 	if err != nil {

@@ -10,7 +10,7 @@ type UserService interface {
 	GetProfile(in models.UserId) (models.UserProfile, error)
 	AddImage(in *models.UpdateCarImage) (models.Message, error)
 	GetImage(in models.UserId) (models.Url, error)
-	GetPaidFines(in models.UserId) (*[]*models.UserFines, error)
+	GetPaidFinesU(in models.UserId) (*[]*models.UserFines, error)
 	GetUnpaid(in models.UserId) (*[]*models.UserFines, error)
 	DeleteUser(in models.UserId) (models.Message, error)
 }
@@ -54,8 +54,8 @@ func (u *userService) GetImage(in models.UserId) (models.Url, error) {
 	return models.Url{Url: res}, nil
 }
 
-func (u *userService) GetPaidFines(in models.UserId) (*[]*models.UserFines, error) {
-	res, err := u.st.GetPaidFines(in.Id)
+func (u *userService) GetPaidFinesU(in models.UserId) (*[]*models.UserFines, error) {
+	res, err := u.st.GetPaidFinesU(in.Id)
 	if err != nil {
 		u.log.Error("Failed to get paid fines", "error", err)
 		return nil, err
