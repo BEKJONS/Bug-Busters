@@ -17,13 +17,3 @@ func ConnectPostgres(config config.Config) (*sqlx.DB, error) {
 	}
 	return db, nil
 }
-
-//func Connectfortest() (*sqlx.DB, error) {
-//	db, err := sqlx.Connect("postgres",
-//		"host=localhost port=5432 user=postgres password=123321 dbname=road_24 sslmode=disable")
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	return db, nil
-//}

@@ -16,7 +16,6 @@ COPY . .
 COPY .env .
 
 # Build the Go application
-# Adding GOFLAGS=-mod=mod to disable module vendoring
 RUN GOFLAGS=-mod=mod CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/main.go
 
 # Download the wait-for-it.sh script
@@ -46,4 +45,4 @@ EXPOSE 8080
 RUN chmod +x ./main
 
 # Define the command to run the application with wait-for-it.sh
-CMD ["/bin/bash", "/wait-for-it.sh", "--", "./main"]
+CMD ["/bin/bash", "/wait-for-it.sh", "postgres:5432", "--", "./main"]
