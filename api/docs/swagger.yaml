@@ -46,7 +46,7 @@ definitions:
     type: object
 info:
   contact: {}
-  description: server for siginIn or signUp
+  description: server for signIn or signUp
   title: Authenfication service
   version: "1.0"
 paths:

@@ -4,7 +4,7 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "server for siginIn or signUp",
+        "description": "server for signIn or signUp",
         "title": "Authenfication service",
         "contact": {},
         "version": "1.0"

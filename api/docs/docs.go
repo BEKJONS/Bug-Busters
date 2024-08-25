@@ -200,7 +200,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/auth",
 	Schemes:          []string{"http"},
 	Title:            "Authenfication service",
-	Description:      "server for siginIn or signUp",
+	Description:      "server for signIn or signUp",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
