@@ -1,36 +1,34 @@
-# Stage 1: Build stage
-FROM golang:1.23 AS builder
+FROM golang:1.22.5 AS builder
 
 WORKDIR /app
 
-# Copy and download dependencies
-COPY go.mod .
-COPY go.sum .
+COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy the rest of the application
 COPY . .
 
-# Optionally copy the .env file if needed
 COPY .env .
 
-# Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -C ./cmd -a -installsuffix cgo -o ./myapp .
-RUN chmod +x ./myapp
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/main.go
 
-# Stage 2: Final stage
+# Скачиваем скрипт wait-for-it.sh
+RUN curl -o /wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
+
 FROM alpine:latest
+
+RUN apk --no-cache add ca-certificates bash
 
 WORKDIR /app
 
-# Copy the compiled binary from the builder stage
-COPY --from=builder /app/myapp .
+COPY --from=builder /app .
+COPY --from=builder /app/main .
+COPY --from=builder /wait-for-it.sh /wait-for-it.sh
 
-# Optionally copy the .env file
-COPY --from=builder /app/.env .
+RUN mkdir -p pkg/logs
 
-# Expose port 8081
 EXPOSE 8080
 
-# Command to run the executable
-CMD ["./myapp"]
+RUN chmod +x ./main
+
+CMD ["/bin/bash", "/wait-for-it.sh", "rabbit:5672", "--", "./main"]
