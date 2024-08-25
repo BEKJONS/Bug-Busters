@@ -288,7 +288,11 @@ paths:
       description: Retrieve all fines
       parameters:
       - in: query
+      - in: query
         name: limit
+        type: integer
+      - in: query
+        name: page
         type: integer
       - in: query
         name: page
@@ -382,7 +386,15 @@ paths:
         in: query
         name: page
         required: true
+      - description: Pagination
+        in: query
+        name: page
+        required: true
         type: integer
+      - description: Limit
+        in: query
+        name: limit
+        required: true
       - description: Limit
         in: query
         name: limit
@@ -431,6 +443,29 @@ paths:
       summary: Accept a fine by ID
       tags:
       - Fines
+  /fines/send_acceptation:
+    post:
+      consumes:
+      - application/json
+      description: Retrieve the ID of the accepted fine
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Accepted fine ID
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Accept a fine by ID
+      tags:
+      - Fines
   /fines/unpaid:
     get:
       consumes:
@@ -441,7 +476,15 @@ paths:
         in: query
         name: page
         required: true
+      - description: Pagination
+        in: query
+        name: page
+        required: true
         type: integer
+      - description: Limit
+        in: query
+        name: limit
+        required: true
       - description: Limit
         in: query
         name: limit

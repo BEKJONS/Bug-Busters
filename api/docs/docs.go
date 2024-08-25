@@ -182,10 +182,12 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "name": "limit",
+                        "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "integer",
+                        "name": "page",
                         "name": "page",
                         "in": "query"
                     }
@@ -272,8 +274,16 @@ const docTemplate = `{
                     "Fines"
                 ],
                 "summary": "Accept Fines By ID",
+                "summary": "Accept Fines By ID",
                 "parameters": [
                     {
+                        "description": "Accept fine",
+                        "name": "FineAccept",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.FineAccept"
+                        }
                         "description": "Accept fine",
                         "name": "FineAccept",
                         "in": "body",
@@ -287,6 +297,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
+                            "$ref": "#/definitions/models.Message"
                             "$ref": "#/definitions/models.Message"
                         }
                     },
@@ -306,7 +317,9 @@ const docTemplate = `{
             }
         },
         "/fines/paid": {
+        "/fines/paid": {
             "get": {
+                "description": "Retrieve all paid fines",
                 "description": "Retrieve all paid fines",
                 "consumes": [
                     "application/json"
@@ -318,6 +331,7 @@ const docTemplate = `{
                     "Fines"
                 ],
                 "summary": "Get Paid Fines",
+                "summary": "Get Paid Fines",
                 "parameters": [
                     {
                         "type": "integer",
@@ -325,9 +339,17 @@ const docTemplate = `{
                         "name": "page",
                         "in": "query",
                         "required": true
+                        "description": "Pagination",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
                         "description": "Limit",
                         "name": "limit",
                         "in": "query",
@@ -359,6 +381,9 @@ const docTemplate = `{
                 }
             }
         },
+        "/fines/send_acceptation": {
+            "post": {
+                "description": "Retrieve the ID of the accepted fine",
         "/fines/send_acceptation": {
             "post": {
                 "description": "Retrieve the ID of the accepted fine",
@@ -407,9 +432,48 @@ const docTemplate = `{
                     "Fines"
                 ],
                 "summary": "Get Unpaid Fines",
+                "summary": "Accept a fine by ID",
+                "responses": {
+                    "200": {
+                        "description": "Accepted fine ID",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/fines/unpaid": {
+            "get": {
+                "description": "Retrieve all unpaid fines",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fines"
+                ],
+                "summary": "Get Unpaid Fines",
                 "parameters": [
                     {
                         "type": "integer",
+                        "description": "Pagination",
+                        "name": "page",
+                        "in": "query",
                         "description": "Pagination",
                         "name": "page",
                         "in": "query",
@@ -421,12 +485,21 @@ const docTemplate = `{
                         "name": "limit",
                         "in": "query",
                         "required": true
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Fine"
+                            }
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/models.Fine"
