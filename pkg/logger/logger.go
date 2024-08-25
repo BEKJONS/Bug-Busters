@@ -11,7 +11,7 @@ func NewLogger() *slog.Logger {
 		Level: slog.LevelDebug,
 	}
 
-	file, err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	file, err := os.OpenFile("pkg/logger/app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("error opening log file: %v", err)
 		return nil
