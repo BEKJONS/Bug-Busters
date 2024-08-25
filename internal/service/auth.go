@@ -12,6 +12,7 @@ import (
 type AuthService interface {
 	Register(in models.RegisterRequest) error
 	Login(in *models.LoginEmailRequest) (*models.Tokens, error)
+	AddLicence(in *models.LicenceNumber) (*models.Message, error)
 }
 
 func NewAuthService(st storage.AuthStorage, logger *slog.Logger) AuthService {
@@ -73,4 +74,15 @@ func (a *authService) Login(in *models.LoginEmailRequest) (*models.Tokens, error
 	}
 
 	return response, nil
+}
+
+func (a *authService) AddLicence(in *models.LicenceNumber) (*models.Message, error) {
+
+	err := a.st.AddLicence(in)
+	if err != nil {
+		a.log.Error("Failed to add licence", "error", err)
+		return nil, err
+	}
+
+	return &models.Message{"Licence added"}, nil
 }

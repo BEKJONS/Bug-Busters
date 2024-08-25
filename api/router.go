@@ -14,9 +14,9 @@ import (
 // @description server for siginIn or signUp
 // @BasePath /auth
 // @schemes http
-func NewRouter(s *service.AuthService) *gin.Engine {
+func NewRouter(s service.AuthService) *gin.Engine {
 	r := gin.New()
-	h := handler.NewAuthHandler(logger.NewLogger(), *s)
+	h := handler.NewAuthHandler(logger.NewLogger(), s)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	auth := r.Group("/auth")

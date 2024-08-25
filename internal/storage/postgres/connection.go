@@ -4,6 +4,7 @@ import (
 	"bug_busters/pkg/config"
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 func ConnectPostgres(config config.Config) (*sqlx.DB, error) {
