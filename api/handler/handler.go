@@ -22,17 +22,16 @@ type Handlers interface {
 	GetService(c *gin.Context)
 	GetAllServices(c *gin.Context)
 	DeleteService(c *gin.Context)
-
 }
 
 type Handler struct {
-	srv service.AuthService
-	ii  service.IIService
+	auth service.AuthService
+	ii   service.IIService
 	serv service.IService
 	user service.UserService
-	log *slog.Logger
+	log  *slog.Logger
 }
 
 func NewHandler(log *slog.Logger, sr service.AuthService, II service.IIService, serv service.IService, user service.UserService) Handlers {
-	return &Handler{log: log, srv: sr, ii: II, serv: serv, user: user}
+	return &Handler{log: log, auth: sr, ii: II, serv: serv, user: user}
 }
