@@ -42,14 +42,27 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 		fines.POST("/send_acceptation", h.SendAcceptation)
 	}
 	// Service routes
-	service := r.Group("/service")
+	services := r.Group("/service")
 	{
-		service.GET("", h.GetAllServices)
-		service.GET("/:id", h.GetService)
-		service.POST("/create", h.CreateService)
-		service.PUT("/update", h.UpdateService)
-		service.DELETE("/delete/:id", h.DeleteService)
+		services.GET("", h.GetAllServices)
+		services.GET("/:id", h.GetService)
+		services.POST("/create", h.CreateService)
+		services.PUT("/update", h.UpdateService)
+		services.DELETE("/delete/:id", h.DeleteService)
 	}
+	user := r.Group("/user")
+	{
+		user.GET("/profile", h.GetProfile)
+		user.GET("/paid_fines", h.GetPaidFines)
+		user.GET("/unpaid_fines", h.GetUnpaid)
+	}
+	admin := r.Group("/admin")
+	{
+		admin.GET("/profile/:id", h.GetProfileAdmin)
+		admin.GET("/paid_fines/:id", h.GetPaidFinesAdmin)
+		admin.GET("/unpaid_fines/:id", h.GetUnpaidAdmin)
+		admin.DELETE("/:id", h.DeleteUser)
 
+	}
 	return r
 }

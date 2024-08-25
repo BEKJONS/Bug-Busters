@@ -23,6 +23,14 @@ type Handlers interface {
 	GetService(c *gin.Context)
 	GetAllServices(c *gin.Context)
 	DeleteService(c *gin.Context)
+
+	GetProfile(c *gin.Context)
+	GetProfileAdmin(c *gin.Context)
+	GetPaidFinesU(c *gin.Context)
+	GetPaidFinesAdmin(c *gin.Context)
+	GetUnpaidAdmin(c *gin.Context)
+	GetUnpaid(c *gin.Context)
+	DeleteUser(c *gin.Context)
 }
 
 type Handler struct {
