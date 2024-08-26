@@ -14,3 +14,19 @@ type DriverLicense struct {
 	IssuedBy       string `db:"issued_by"`
 	LicenseNumber  string `db:"license_number"`
 }
+
+type CardId struct {
+	ID string `db:"id" json:"id"`
+}
+
+type PassportsId struct {
+	ID []string `db:"id" json:"id"`
+}
+
+type LicenceNumbers struct {
+	LicenceNumber string `db:"licence_number" json:"licence_number"`
+}
+
+type PassportId struct {
+	PassportId string `db:"passport_id" json:"passport_id"`
+}
