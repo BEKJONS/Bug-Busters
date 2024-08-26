@@ -173,14 +173,13 @@ func (h *Handler) GetImage(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
-// @Param id path string true "User ID"
 // @Success 200 {array} models.UserFines
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
 // @Router /user/paid_fines [get]
 func (h *Handler) GetPaidFinesU(c *gin.Context) {
-	id := c.MustGet("id").(string)
+	id := c.MustGet("user_id").(string)
 	fines, err := h.user.GetPaidFinesU(models.UserId{Id: id})
 	if err != nil {
 		h.log.Error("Failed to get paid fines", err)
@@ -201,7 +200,7 @@ func (h *Handler) GetPaidFinesU(c *gin.Context) {
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
-// @Router /user/paid_fines/{id} [get]
+// @Router /admin/paid_fines/{id} [get]
 func (h *Handler) GetPaidFinesAdmin(c *gin.Context) {
 	id := c.Param("id")
 	fines, err := h.user.GetPaidFinesU(models.UserId{Id: id})
@@ -220,14 +219,13 @@ func (h *Handler) GetPaidFinesAdmin(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security ApiKeyAuth
-// @Param id path string true "User ID"
 // @Success 200 {array} models.UserFines
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
 // @Router /user/unpaid_fines [get]
 func (h *Handler) GetUnpaid(c *gin.Context) {
-	id := c.MustGet("id").(string)
+	id := c.MustGet("user_id").(string)
 	fines, err := h.user.GetUnpaid(models.UserId{Id: id})
 	if err != nil {
 		h.log.Error("Failed to get unpaid fines", err)
@@ -248,7 +246,7 @@ func (h *Handler) GetUnpaid(c *gin.Context) {
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
-// @Router /user/unpaid_fines/{id} [get]
+// @Router /admin/unpaid_fines/{id} [get]
 func (h *Handler) GetUnpaidAdmin(c *gin.Context) {
 	id := c.Param("id")
 	fines, err := h.user.GetUnpaid(models.UserId{Id: id})

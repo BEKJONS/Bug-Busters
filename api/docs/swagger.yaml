@@ -156,10 +156,12 @@ definitions:
     type: object
   models.UserProfile:
     properties:
+      Driver:
+        $ref: '#/definitions/models.DriverLicence'
       created_at:
         type: string
       driver_license:
-        $ref: '#/definitions/models.DriverLicence'
+        type: string
       email:
         type: string
       role:
@@ -209,6 +211,41 @@ paths:
       summary: Delete User
       tags:
       - User
+  /admin/paid_fines/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all paid fines for a user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserFines'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Get Paid Fines
+      tags:
+      - User
   /admin/profile/{id}:
     get:
       consumes:
@@ -242,6 +279,41 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get User Profile
+      tags:
+      - User
+  /admin/unpaid_fines/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all unpaid fines for a user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserFines'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Get Unpaid Fines
       tags:
       - User
   /auth/add_license:
@@ -744,12 +816,6 @@ paths:
       consumes:
       - application/json
       description: Retrieve all paid fines for a user
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -773,41 +839,6 @@ paths:
             $ref: '#/definitions/models.Error'
       security:
       - ApiKeyAuth: []
-      summary: Get Paid Fines
-      tags:
-      - User
-  /user/paid_fines/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve all paid fines for a user
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.UserFines'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.Error'
       summary: Get Paid Fines
       tags:
       - User
@@ -845,12 +876,6 @@ paths:
       consumes:
       - application/json
       description: Retrieve all unpaid fines for a user
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -874,41 +899,6 @@ paths:
             $ref: '#/definitions/models.Error'
       security:
       - ApiKeyAuth: []
-      summary: Get Unpaid Fines
-      tags:
-      - User
-  /user/unpaid_fines/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve all unpaid fines for a user
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.UserFines'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.Error'
       summary: Get Unpaid Fines
       tags:
       - User

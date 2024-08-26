@@ -10,3 +10,7 @@ p, user, /user/*, GET
 p, user, /user/*, POST
 p, user, /user/*, PUT
 p, user, /user/*, DELETE
+p, user, /admin/*, GET
+p, user, /admin/*, POST
+p, user, /admin/*, PUT
+p, user, /admin/*, DELETE

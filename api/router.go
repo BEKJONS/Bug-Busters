@@ -29,9 +29,6 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 	// Swagger UI route
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.Use(middleware.PermissionMiddleware(enf))
-	r.POST("/upload", h.AddImage)
-
 	// Authentication routes
 	auth := r.Group("/auth")
 	{
@@ -39,6 +36,8 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 		auth.POST("/login", h.Login)
 		auth.POST("/add_license", h.AddLicense)
 	}
+	r.Use(middleware.PermissionMiddleware(enf))
+	r.POST("/upload", h.AddImage)
 	// Fines routes
 	fines := r.Group("/fines")
 	{
@@ -72,5 +71,6 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 		admin.DELETE("/:id", h.DeleteUser)
 
 	}
+
 	return r
 }

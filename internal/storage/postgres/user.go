@@ -31,6 +31,8 @@ func (u *userRepo) GetProfile(id models.UserId) (models.UserProfile, error) {
 		return models.UserProfile{}, err
 	}
 
+	users.Driver = certificate
+
 	return users, nil
 }
 
