@@ -59,7 +59,7 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 	user := r.Group("/user")
 	{
 		user.GET("/profile", h.GetProfile)
-		user.GET("/paid_fines", h.GetPaidFines)
+		user.GET("/paid_fines", h.GetPaidFinesU)
 		user.GET("/unpaid_fines", h.GetUnpaid)
 	}
 	admin := r.Group("/admin")

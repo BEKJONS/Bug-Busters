@@ -13,6 +13,7 @@ import (
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Success 200 {object} models.UserProfile
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error

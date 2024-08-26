@@ -15,24 +15,22 @@ type casbinPermission struct {
 }
 
 func (c *casbinPermission) GetRole(ctx *gin.Context) (string, int) {
-	Token := ctx.GetHeader("Authorization")
-	if Token == "" {
-		fmt.Println(1111111)
+	tokens := ctx.GetHeader("Authorization")
+	if tokens == "" {
 		return "1.unauthorized", http.StatusUnauthorized
 	}
 
-	claims, err := token.ExtractClaims(Token)
-	if err != nil || &claims == nil {
-		fmt.Println(err)
+	claims, err := token.ExtractClaims(tokens) // Assuming token is your JWT handler
+	if err != nil {
 		return "2.unauthorized", http.StatusUnauthorized
 	}
 
 	role, ok := claims["user_role"].(string)
 	if !ok {
-		fmt.Println(err)
 		return "3.unauthorized", http.StatusUnauthorized
 	}
-	return role, 0
+
+	return role, http.StatusOK
 }
 
 func (c *casbinPermission) CheckPermission(ctx *gin.Context) (bool, error) {
