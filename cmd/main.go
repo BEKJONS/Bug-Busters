@@ -35,7 +35,8 @@ func main() {
 	ii := service.NewIIService(postgres.NewIIRepo(db), logger)
 	user := service.NewUserService(logger, postgres.NewUserRepo(db))
 	servs := service.NewService(postgres.NewServiceRepo(db))
-	router := api.NewRouter(auth, ii, user, servs, CasbinEnforcer)
+	sw := service.NewSWStorage(postgres.NewSWRepo(db), logger)
+	router := api.NewRouter(auth, ii, user, servs, sw, CasbinEnforcer)
 	err = router.Run(cfg.GIN_PORT)
 
 	if err != nil {

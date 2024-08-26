@@ -32,6 +32,13 @@ type Handlers interface {
 	GetUnpaid(c *gin.Context)
 	DeleteUser(c *gin.Context)
 
+	CreateLicense(c *gin.Context)
+	CreatePassport(c *gin.Context)
+	GetAllLicenses(c *gin.Context)
+	GetAllPassports(c *gin.Context)
+	DeleteLicense(c *gin.Context)
+	DeletePassport(c *gin.Context)
+
 	AddImage(c *gin.Context)
 }
 
@@ -40,9 +47,10 @@ type Handler struct {
 	ii   service.IIService
 	serv service.IService
 	user service.UserService
+	sw   service.SWService
 	log  *slog.Logger
 }
 
-func NewHandler(log *slog.Logger, sr service.AuthService, II service.IIService, serv service.IService, user service.UserService) Handlers {
-	return &Handler{log: log, auth: sr, ii: II, serv: serv, user: user}
+func NewHandler(log *slog.Logger, sr service.AuthService, II service.IIService, serv service.IService, user service.UserService, Sw service.SWService) Handlers {
+	return &Handler{log: log, auth: sr, ii: II, serv: serv, user: user, sw: Sw}
 }

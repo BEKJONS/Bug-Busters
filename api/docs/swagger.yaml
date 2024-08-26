@@ -1,4 +1,9 @@
 definitions:
+  models.CardId:
+    properties:
+      id:
+        type: string
+    type: object
   models.DriverLicence:
     properties:
       address:
@@ -22,6 +27,34 @@ definitions:
       last_name:
         type: string
       licence_number:
+        type: string
+    type: object
+  models.DriverLicense:
+    properties:
+      address:
+        type: string
+      birthDate:
+        description: Changed to string
+        type: string
+      category:
+        type: string
+      expirationDate:
+        description: Changed to string
+        type: string
+      fatherName:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+      issueDate:
+        description: Changed to string
+        type: string
+      issuedBy:
+        type: string
+      lastName:
+        type: string
+      licenseNumber:
         type: string
     type: object
   models.Error:
@@ -77,6 +110,11 @@ definitions:
       userId:
         type: string
     type: object
+  models.LicenceNumbers:
+    properties:
+      licence_number:
+        type: string
+    type: object
   models.LoginEmailRequest:
     properties:
       email:
@@ -97,6 +135,18 @@ definitions:
     properties:
       message:
         type: string
+    type: object
+  models.PassportId:
+    properties:
+      passport_id:
+        type: string
+    type: object
+  models.PassportsId:
+    properties:
+      id:
+        items:
+          type: string
+        type: array
     type: object
   models.RegisterRequest:
     properties:
@@ -739,6 +789,176 @@ paths:
       summary: Update service
       tags:
       - service
+  /single_window/license:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a driver license by license number
+      parameters:
+      - description: Delete license
+        in: body
+        name: LicenseNumber
+        required: true
+        schema:
+          $ref: '#/definitions/models.LicenceNumbers'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete License
+      tags:
+      - License
+    post:
+      consumes:
+      - application/json
+      description: Create a new driver license
+      parameters:
+      - description: Create license
+        in: body
+        name: License
+        required: true
+        schema:
+          $ref: '#/definitions/models.DriverLicense'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Create License
+      tags:
+      - License
+  /single_window/licenses:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all driver licenses
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.DriverLicense'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Licenses
+      tags:
+      - License
+  /single_window/passport:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a passport by passport ID
+      parameters:
+      - description: Delete passport
+        in: body
+        name: PassportId
+        required: true
+        schema:
+          $ref: '#/definitions/models.PassportId'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Passport
+      tags:
+      - Passport
+    post:
+      consumes:
+      - application/json
+      description: Create a new passport
+      parameters:
+      - description: Create passport
+        in: body
+        name: Passport
+        required: true
+        schema:
+          $ref: '#/definitions/models.CardId'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Passport
+      tags:
+      - Passport
+  /single_window/passports:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all passports
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PassportsId'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Passports
+      tags:
+      - Passport
   /upload:
     post:
       consumes:
