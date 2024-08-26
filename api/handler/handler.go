@@ -16,12 +16,21 @@ type Handlers interface {
 	GetPaidFines(c *gin.Context)
 	GetUnpaidFines(c *gin.Context)
 	GetAllFines(c *gin.Context)
+	SendAcceptation(c *gin.Context)
 
 	CreateService(c *gin.Context)
 	UpdateService(c *gin.Context)
 	GetService(c *gin.Context)
 	GetAllServices(c *gin.Context)
 	DeleteService(c *gin.Context)
+
+	GetProfile(c *gin.Context)
+	GetProfileAdmin(c *gin.Context)
+	GetPaidFinesU(c *gin.Context)
+	GetPaidFinesAdmin(c *gin.Context)
+	GetUnpaidAdmin(c *gin.Context)
+	GetUnpaid(c *gin.Context)
+	DeleteUser(c *gin.Context)
 
 	AddImage(c *gin.Context)
 }
