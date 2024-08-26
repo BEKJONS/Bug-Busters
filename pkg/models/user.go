@@ -11,7 +11,7 @@ type UserProfile struct {
 	Role          string        `json:"role" db:"role"`
 	CreatedAt     string        `json:"created_at" db:"created_at"`
 	UpdatedAt     string        `json:"updated_at" db:"updated_at"`
-	Driver        DriverLicence `json:"driver_license"`
+	Driver        DriverLicence `json:"Driver"`
 }
 
 type DriverLicence struct {

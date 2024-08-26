@@ -71,5 +71,6 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 		admin.DELETE("/:id", h.DeleteUser)
 
 	}
+
 	return r
 }
