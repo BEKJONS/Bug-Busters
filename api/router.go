@@ -23,7 +23,8 @@ import (
 // @BasePath /
 func NewRouter(s service.AuthService, i service.IIService, u service.UserService, serv service.IService, enf *casbin.Enforcer) *gin.Engine {
 	r := gin.New()
-	//r.Use(middleware.CORSMiddleware())
+	r.Use(middleware.PermissionMiddleware(enf))
+
 	h := handler.NewHandler(logger.NewLogger(), s, i, serv, u)
 
 	// Swagger UI route
@@ -38,7 +39,6 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 		auth.POST("/login", h.Login)
 		auth.POST("/add_license", h.AddLicense)
 	}
-	r.Use(middleware.PermissionMiddleware(enf))
 	// Fines routes
 	fines := r.Group("/fines")
 	{

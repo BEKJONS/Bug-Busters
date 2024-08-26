@@ -14,16 +14,17 @@ import (
 
 func main() {
 	cfg := config.Load()
+
 	logger := logger2.NewLogger()
 	path, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
-	casbinEnforcer, err := casbin.NewEnforcer(path+"/pkg/casbin/model.conf", path+"/pkg/casbin/policy.csv")
+	CasbinEnforcer, err := casbin.NewEnforcer(path+"/pkg/casbin/model.conf", path+"/pkg/casbin/policy.csv")
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		panic(err)
 	}
-
 	db, err := postgres.ConnectPostgres(cfg)
 	if err != nil {
 		logger.Error("error in connection", "error", err)
@@ -34,7 +35,7 @@ func main() {
 	ii := service.NewIIService(postgres.NewIIRepo(db), logger)
 	user := service.NewUserService(logger, postgres.NewUserRepo(db))
 	servs := service.NewService(postgres.NewServiceRepo(db))
-	router := api.NewRouter(auth, ii, user, servs, casbinEnforcer)
+	router := api.NewRouter(auth, ii, user, servs, CasbinEnforcer)
 	err = router.Run(cfg.GIN_PORT)
 
 	if err != nil {

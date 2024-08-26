@@ -6,3 +6,7 @@ p, user, /service/*, GET
 p, user, /service/*, POST
 p, user, /service/*, PUT
 p, user, /service/*, DELETE
+p, user, /user/*, GET
+p, user, /user/*, POST
+p, user, /user/*, PUT
+p, user, /user/*, DELETE
