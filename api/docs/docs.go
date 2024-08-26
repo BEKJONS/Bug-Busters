@@ -794,6 +794,62 @@ const docTemplate = `{
                 }
             }
         },
+        "/upload": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Uploads an image file to MinIO and updates car image information with the file URL.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Upload an image and update car information",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Image file to upload",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User ID to associate with the uploaded image",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request, e.g., missing file or user ID",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error, e.g., failure in MinIO or external service",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/user/image": {
             "get": {
                 "security": [
@@ -836,55 +892,6 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/models.Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.Error"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Upload a new car image",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Add Car Image",
-                "parameters": [
-                    {
-                        "description": "Car Image",
-                        "name": "image",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.UpdateCarImage"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Message"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/models.Error"
                         }
@@ -1382,17 +1389,6 @@ const docTemplate = `{
                     "$ref": "#/definitions/models.LoginResponse"
                 },
                 "refresh_token": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.UpdateCarImage": {
-            "type": "object",
-            "properties": {
-                "url": {
-                    "type": "string"
-                },
-                "user_id": {
                     "type": "string"
                 }
             }

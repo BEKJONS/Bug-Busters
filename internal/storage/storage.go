@@ -32,3 +32,12 @@ type UserStorage interface {
 	GetUnpaid(userId string) (*[]*models.UserFines, error)
 	DeleteUser(userId string) error
 }
+
+type SWStorage interface {
+	CreateLicense(license models.DriverLicense) error
+	CreatePassport(CarId string) error
+	GetLicenseAll() ([]models.DriverLicense, error)
+	GetPassportAll() ([]string, error)
+	DeleteLicense(licenseNumber string) error
+	DeletePassport(passportID string) error
+}

@@ -29,6 +29,8 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 	// Swagger UI route
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	r.POST("/upload", h.AddImage)
+
 	// Authentication routes
 	auth := r.Group("/auth")
 	{

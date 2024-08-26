@@ -140,13 +140,6 @@ definitions:
       refresh_token:
         type: string
     type: object
-  models.UpdateCarImage:
-    properties:
-      url:
-        type: string
-      user_id:
-        type: string
-    type: object
   models.Url:
     properties:
       url:
@@ -674,6 +667,43 @@ paths:
       summary: Update service
       tags:
       - service
+  /upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Uploads an image file to MinIO and updates car image information
+        with the file URL.
+      parameters:
+      - description: Image file to upload
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: User ID to associate with the uploaded image
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad request, e.g., missing file or user ID
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error, e.g., failure in MinIO or external service
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Upload an image and update car information
+      tags:
+      - Images
   /user/image:
     get:
       consumes:
@@ -707,37 +737,6 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get Car Image
-      tags:
-      - User
-    post:
-      consumes:
-      - application/json
-      description: Upload a new car image
-      parameters:
-      - description: Car Image
-        in: body
-        name: image
-        required: true
-        schema:
-          $ref: '#/definitions/models.UpdateCarImage'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Message'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.Error'
-      security:
-      - ApiKeyAuth: []
-      summary: Add Car Image
       tags:
       - User
   /user/paid_fines:
