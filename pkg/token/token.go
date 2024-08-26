@@ -2,90 +2,62 @@ package token
 
 import (
 	"bug_busters/pkg/config"
-	"github.com/dgrijalva/jwt-go"
+	"fmt"
 	"time"
+
+	"github.com/golang-jwt/jwt"
 )
 
-type Claims struct {
-	ID    string `json:"id"`
-	Role  string `json:"role"`
-	Email string `json:"email"`
-	jwt.StandardClaims
-}
-
-func GenerateAccessToken(id, role, email string) (string, error) {
-	claims := Claims{
-		ID:    id,
-		Role:  role,
-		Email: email,
-		StandardClaims: jwt.StandardClaims{
-			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().Add(time.Hour * 50).Unix(),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	str, err := token.SignedString([]byte(config.Load().ACCESS_TOKEN))
+func ValidateToken(tokenstr string) (bool, error) {
+	_, err := ExtractClaims(tokenstr)
 	if err != nil {
-		return "", err
+		return false, err
 	}
-
-	return str, nil
+	return true, nil
 }
 
-func GenerateRefreshToken(id, role, email string) (string, error) {
-	claims := Claims{
-		ID:    id,
-		Role:  role,
-		Email: email,
-		StandardClaims: jwt.StandardClaims{
-			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().Add(time.Hour * 99).Unix(),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(config.Load().REFRESH_TOKEN))
-}
-
-func ExtractAccessClaims(tokenString string) (*Claims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(config.Load().ACCESS_TOKEN), nil
+func ExtractClaims(tokenstr string) (jwt.MapClaims, error) {
+	token, err := jwt.ParseWithClaims(tokenstr, jwt.MapClaims{}, func(t *jwt.Token) (interface{}, error) {
+		// Token imzosi HMAC bo'lishi kerak
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
+		}
+		return []byte(config.Load().SIGNING_KEY), nil
 	})
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse token: %w", err)
 	}
 
 	if !token.Valid {
-		return nil, err
+		return nil, fmt.Errorf("invalid token: %s", tokenstr)
 	}
 
-	claims, ok := token.Claims.(*Claims)
+	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse token claims")
 	}
 
 	return claims, nil
 }
 
-func ExtractRefreshClaims(tokenString string) (*Claims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(config.Load().REFRESH_TOKEN), nil
-	})
+// Token yaratish
+func GenerateJWT(id, role, password string) (string, error) {
+	accesstoken := jwt.New(jwt.SigningMethodHS256)
 
+	// Access Token uchun claimlar
+	accessClaim := accesstoken.Claims.(jwt.MapClaims)
+	accessClaim["user_id"] = id
+	accessClaim["role"] = role
+	accessClaim["password"] = password
+	accessClaim["iat"] = time.Now().Unix()
+	accessClaim["exp"] = time.Now().Add(24 * time.Hour).Unix()
+
+	con := config.Load()
+	access, err := accesstoken.SignedString([]byte(con.SIGNING_KEY))
 	if err != nil {
-		return nil, err
+		return "", fmt.Errorf("error generating access token: %w", err)
 	}
 
-	if !token.Valid {
-		return nil, err
-	}
-
-	claims, ok := token.Claims.(*Claims)
-	if !ok {
-		return nil, err
-	}
-
-	return claims, nil
+	return access, nil
 }

@@ -22,8 +22,7 @@ type Config struct {
 	CASBIN_DB_HOST string
 	CASBIN_DB_NAME string
 
-	ACCESS_TOKEN  string
-	REFRESH_TOKEN string
+	SIGNING_KEY  string
 }
 
 func Load() Config {
@@ -45,8 +44,7 @@ func Load() Config {
 	config.CASBIN_DB_PORT = cast.ToString(coalesce("CASBIN_DB_PORT", "5432"))
 	config.CASBIN_DB_NAME = cast.ToString(coalesce("CASBIN_DB_NAME", "casbin"))
 
-	config.ACCESS_TOKEN = cast.ToString(coalesce("ACCESS_TOKEN", "SSECCA"))
-	config.REFRESH_TOKEN = cast.ToString(coalesce("REFRESH_TOKEN", "SHERFER"))
+	config.SIGNING_KEY = cast.ToString(coalesce("SIGNING_KEY", "SSECCA"))
 
 	return config
 

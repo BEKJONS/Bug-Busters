@@ -15,8 +15,123 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/profile/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve the profile of a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get User Profile",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UserProfile"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a user by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete User",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/add_license": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Add a new license to the system",
                 "consumes": [
                     "application/json"
@@ -63,6 +178,11 @@ const docTemplate = `{
         },
         "/auth/login": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "sign in user",
                 "consumes": [
                     "application/json"
@@ -115,6 +235,11 @@ const docTemplate = `{
         },
         "/auth/register": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "create users",
                 "consumes": [
                     "application/json"
@@ -167,6 +292,11 @@ const docTemplate = `{
         },
         "/fines": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all fines",
                 "consumes": [
                     "application/json"
@@ -215,6 +345,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create a new fine",
                 "consumes": [
                     "application/json"
@@ -260,7 +395,12 @@ const docTemplate = `{
             }
         },
         "/fines/:id/accept": {
-            "post": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Accept a fine by updating its payment date",
                 "consumes": [
                     "application/json"
@@ -307,6 +447,11 @@ const docTemplate = `{
         },
         "/fines/paid": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all paid fines",
                 "consumes": [
                     "application/json"
@@ -321,12 +466,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "name": "limit",
+                        "description": "Pagination",
+                        "name": "page",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "name": "page",
+                        "description": "Limit",
+                        "name": "limit",
                         "in": "query"
                     }
                 ],
@@ -355,8 +502,53 @@ const docTemplate = `{
                 }
             }
         },
+        "/fines/send_acceptation": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve the ID of the accepted fine",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fines"
+                ],
+                "summary": "Accept a fine by ID",
+                "responses": {
+                    "200": {
+                        "description": "Accepted fine ID",
+                        "schema": {
+                            "$ref": "#/definitions/models.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/fines/unpaid": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all unpaid fines",
                 "consumes": [
                     "application/json"
@@ -371,12 +563,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "name": "limit",
+                        "description": "Pagination",
+                        "name": "page",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "name": "page",
+                        "description": "Limit",
+                        "name": "limit",
                         "in": "query"
                     }
                 ],
@@ -407,6 +601,11 @@ const docTemplate = `{
         },
         "/service": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get all services",
                 "consumes": [
                     "application/json"
@@ -436,6 +635,11 @@ const docTemplate = `{
         },
         "/service/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create service",
                 "consumes": [
                     "application/json"
@@ -476,6 +680,11 @@ const docTemplate = `{
         },
         "/service/delete/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete service",
                 "consumes": [
                     "application/json"
@@ -514,6 +723,11 @@ const docTemplate = `{
         },
         "/service/update": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Update service",
                 "consumes": [
                     "application/json"
@@ -554,6 +768,11 @@ const docTemplate = `{
         },
         "/service/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get service",
                 "consumes": [
                     "application/json"
@@ -592,63 +811,67 @@ const docTemplate = `{
         },
         "/upload": {
             "post": {
-                "description": "Uploads an image to MinIO and returns the URL of the uploaded image",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Uploads an image file to MinIO and updates car image information with the file URL.",
                 "consumes": [
                     "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Upload Image",
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Upload an image and update car information",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
                     {
                         "type": "file",
                         "description": "Image file to upload",
                         "name": "file",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User ID to associate with the uploaded image",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "The URL of the uploaded image",
+                        "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/models.Message"
                         }
                     },
                     "400": {
-                        "description": "Bad request",
+                        "description": "Bad request, e.g., missing file or user ID",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal server error, e.g., failure in MinIO or external service",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
             }
         },
-        "/user/image/{id}": {
+        "/user/image": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve the image of a user's car",
                 "consumes": [
                     "application/json"
@@ -674,6 +897,64 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Url"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/paid_fines": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve all paid fines for a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get Paid Fines",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserFines"
+                            }
                         }
                     },
                     "400": {
@@ -750,7 +1031,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/profile/{id}": {
+        "/user/profile": {
             "get": {
                 "description": "Retrieve the profile of a user",
                 "consumes": [
@@ -763,6 +1044,52 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "Get User Profile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UserProfile"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/unpaid_fines": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve all unpaid fines for a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get Unpaid Fines",
                 "parameters": [
                     {
                         "type": "string",
@@ -776,7 +1103,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.UserProfile"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserFines"
+                            }
                         }
                     },
                     "400": {
@@ -830,56 +1160,6 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/models.UserFines"
                             }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/models.Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.Error"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/{id}": {
-            "delete": {
-                "description": "Delete a user by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Delete User",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Message"
                         }
                     },
                     "400": {
@@ -1168,6 +1448,14 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "description": "Server for signIn or signUp",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
@@ -1175,10 +1463,10 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "/",
-	Schemes:          []string{"http"},
+	BasePath:         "",
+	Schemes:          []string{},
 	Title:            "Authentication service",
-	Description:      "Server for signIn or signUp",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

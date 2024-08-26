@@ -2,8 +2,10 @@ package handler
 
 import (
 	"bug_busters/pkg/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 // CreateFines godoc
@@ -12,6 +14,7 @@ import (
 // @Tags Fines
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param Fine body models.FineReq true "Create fine"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error
@@ -42,11 +45,12 @@ func (h *Handler) CreateFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param FineAccept body models.FineAccept true "Accept fine"
 // @Success 200 {object} models.Message
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
-// @Router /fines/:id/accept [post]
+// @Router /fines/:id/accept [put]
 func (h *Handler) AcceptFinesById(c *gin.Context) {
 	var accept models.FineAccept
 
@@ -72,18 +76,26 @@ func (h *Handler) AcceptFinesById(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
-// @Param Pagination query models.Pagination true "Pagination"
+// @Security ApiKeyAuth
+// @Param page query int false "Pagination"
+// @Param limit query int false "Limit"
 // @Success 200 {object} models.Fines
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 // @Router /fines/paid [get]
 func (h *Handler) GetPaidFines(c *gin.Context) {
 	var pagination models.Pagination
-	if err := c.ShouldBindQuery(&pagination); err != nil {
-		h.log.Error("Error occurred while binding query", err)
-		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
-		return
+	page, err := strconv.Atoi(c.Query("page"))
+	if err != nil {
+		page = 1
 	}
+	pagination.Page = page
+
+	limit, err := strconv.Atoi(c.Query("limit"))
+	if err != nil {
+		limit = 10
+	}
+	pagination.Limit = limit
 
 	fines, err := h.ii.GetPaidFines(pagination)
 	if err != nil {
@@ -101,18 +113,26 @@ func (h *Handler) GetPaidFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
-// @Param Pagination query models.Pagination true "Pagination"
+// @Security ApiKeyAuth
+// @Param page query int false "Pagination"
+// @Param limit query int false "Limit"
 // @Success 200 {object} models.Fines
 // @Failure 400 {object} models.Error
 // @Failure 500 {object} models.Error
 // @Router /fines/unpaid [get]
 func (h *Handler) GetUnpaidFines(c *gin.Context) {
 	var pagination models.Pagination
-	if err := c.ShouldBindQuery(&pagination); err != nil {
-		h.log.Error("Error occurred while binding query", err)
-		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
-		return
+	page, err := strconv.Atoi(c.Query("page"))
+	if err != nil {
+		page = 1
 	}
+	pagination.Page = page
+
+	limit, err := strconv.Atoi(c.Query("limit"))
+	if err != nil {
+		limit = 10
+	}
+	pagination.Limit = limit
 
 	fines, err := h.ii.GetUnpaidFines(pagination)
 	if err != nil {
@@ -130,6 +150,7 @@ func (h *Handler) GetUnpaidFines(c *gin.Context) {
 // @Tags Fines
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param Pagination query models.Pagination true "Pagination"
 // @Success 200 {object} models.Fines
 // @Failure 400 {object} models.Error
@@ -137,11 +158,18 @@ func (h *Handler) GetUnpaidFines(c *gin.Context) {
 // @Router /fines [get]
 func (h *Handler) GetAllFines(c *gin.Context) {
 	var pagination models.Pagination
-	if err := c.ShouldBindQuery(&pagination); err != nil {
-		h.log.Error("Error occurred while binding query", err)
-		c.JSON(http.StatusBadRequest, models.Error{Error: err.Error()})
-		return
+
+	page, err := strconv.Atoi(c.Query("page"))
+	if err != nil {
+		page = 1
 	}
+	pagination.Page = page
+
+	limit, err := strconv.Atoi(c.Query("limit"))
+	if err != nil {
+		limit = 10
+	}
+	pagination.Limit = limit
 
 	fines, err := h.ii.GetAllFines(pagination)
 	if err != nil {
@@ -151,4 +179,20 @@ func (h *Handler) GetAllFines(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, fines)
+}
+
+// SendAcceptation godoc
+// @Summary Accept a fine by ID
+// @Description Retrieve the ID of the accepted fine
+// @Tags Fines
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} models.Message "Accepted fine ID"
+// @Failure 400 {object} models.Error "Bad request"
+// @Failure 500 {object} models.Error "Internal server error"
+// @Router /fines/send_acceptation [post]
+func (h *Handler) SendAcceptation(c *gin.Context) {
+	id := c.MustGet("id").(string)
+	c.JSON(http.StatusOK, models.Message{Message: id})
 }
