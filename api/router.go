@@ -37,7 +37,10 @@ func NewRouter(s service.AuthService, i service.IIService, u service.UserService
 		auth.POST("/add_license", h.AddLicense)
 	}
 	r.Use(middleware.PermissionMiddleware(enf))
-	r.POST("/upload", h.AddImage)
+
+	r.POST("/image", h.AddImage)
+	r.GET("/image", h.GetImage)
+
 	// Fines routes
 	fines := r.Group("/fines")
 	{

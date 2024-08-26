@@ -154,7 +154,7 @@ func (h *Handler) AddImage(c *gin.Context) {
 // @Failure 400 {object} models.Error
 // @Failure 404 {object} models.Error
 // @Failure 500 {object} models.Error
-// @Router /user/image [get]
+// @Router /upload [get]
 func (h *Handler) GetImage(c *gin.Context) {
 	id := c.Param("id")
 	image, err := h.user.GetImage(models.UserId{Id: id})

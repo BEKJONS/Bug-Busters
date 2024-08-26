@@ -17,6 +17,7 @@ type Handlers interface {
 	GetUnpaidFines(c *gin.Context)
 	GetAllFines(c *gin.Context)
 	SendAcceptation(c *gin.Context)
+	GetImage(c *gin.Context)
 
 	CreateService(c *gin.Context)
 	UpdateService(c *gin.Context)
