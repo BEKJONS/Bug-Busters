@@ -38,13 +38,13 @@ func Load() Config {
 	config.DB_PORT = cast.ToString(coalesce("DB_PORT", "5432"))
 	config.DB_NAME = cast.ToString(coalesce("DB_NAME", "road_24"))
 	config.DB_USER = cast.ToString(coalesce("DB_USER", "postgres"))
-	config.DB_PASSWORD = cast.ToString(coalesce("DB_PASSWORD", "BEKJONS"))
+	config.DB_PASSWORD = cast.ToString(coalesce("DB_PASSWORD", "changeme"))
 
 	config.CASBIN_DB_HOST = cast.ToString(coalesce("CASBIN_DB_HOST", "localhost"))
 	config.CASBIN_DB_PORT = cast.ToString(coalesce("CASBIN_DB_PORT", "5432"))
 	config.CASBIN_DB_NAME = cast.ToString(coalesce("CASBIN_DB_NAME", "casbin"))
 
-	config.SIGNING_KEY = cast.ToString(coalesce("SIGNING_KEY", "SSECCA"))
+	config.SIGNING_KEY = cast.ToString(coalesce("SIGNING_KEY", "changeme"))
 
 	return config
 

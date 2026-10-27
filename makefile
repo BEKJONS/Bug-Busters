@@ -1,6 +1,8 @@
 CURRENT_DIR = $(shell pwd)
 
-DB_URL := postgres://postgres:BEKJONS@localhost:5432/road_24?sslmode=disable
+# Override via environment or command line, e.g. `DB_PASSWORD=secret make mig-up`
+DB_PASSWORD ?= changeme
+DB_URL := postgres://postgres:$(DB_PASSWORD)@localhost:5432/road_24?sslmode=disable
 
 proto-gen:
 	./scripts/gen-proto.sh ${CURRENT_DIR}
